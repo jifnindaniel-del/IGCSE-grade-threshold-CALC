@@ -193,25 +193,35 @@ const subjects = {
     name: "International Mathematics",
     hasAstar: true,
     optionGroups: {
-      "Extended — Papers 21, 41, 61": {
-        officialMax: 250, approxMax: true,
-        components: [{name:"Paper 21", max:75},{name:"Paper 41", max:130},{name:"Paper 61", max:45}],
+      "Extended — Papers 21, 41, 61 (BX)": {
+        officialMax: 250,
+        components: [{name:"Paper 21", max:75},{name:"Paper 41", max:75},{name:"Paper 61", max:50}],
+        weightNote: "Paper 61 is double-weighted by Cambridge (raw 50 counts as 100) so the raw component maximums sum to 200 while the weighted overall maximum is 250.",
         sessions: { "June 2025": {Ast:211,A:173,B:133,C:94,D:74,E:55}, "November 2025": {Ast:193,A:155,B:117,C:80,D:59,E:38} }
       },
-      "Extended — Papers 22, 42, 62": {
-        officialMax: 250, approxMax: true,
-        components: [{name:"Paper 22", max:75},{name:"Paper 42", max:130},{name:"Paper 62", max:45}],
+      "Extended — Papers 22, 42, 62 (BY)": {
+        officialMax: 250,
+        components: [{name:"Paper 22", max:75},{name:"Paper 42", max:75},{name:"Paper 62", max:50}],
+        weightNote: "Paper 62 is double-weighted by Cambridge (raw 50 counts as 100) so the raw component maximums sum to 200 while the weighted overall maximum is 250.",
         sessions: { "June 2025": {Ast:216,A:183,B:141,C:100,D:79,E:58}, "November 2025": {Ast:219,A:189,B:145,C:102,D:81,E:61} }
       },
-      "Extended — Papers 23, 43, 63": {
-        officialMax: 250, approxMax: true,
-        components: [{name:"Paper 23", max:75},{name:"Paper 43", max:130},{name:"Paper 63", max:45}],
+      "Extended — Papers 23, 43, 63 (BZ)": {
+        officialMax: 250,
+        components: [{name:"Paper 23", max:75},{name:"Paper 43", max:75},{name:"Paper 63", max:50}],
+        weightNote: "Paper 63 is double-weighted by Cambridge (raw 50 counts as 100) so the raw component maximums sum to 200 while the weighted overall maximum is 250.",
         sessions: { "June 2025": {Ast:214,A:179,B:138,C:97,D:77,E:58}, "November 2025": {Ast:212,A:174,B:136,C:98,D:77,E:57} }
       },
-      "Core — Papers 11, 31, 51": {
-        officialMax: null,
-        components: [{name:"Paper 11", max:56},{name:"Paper 31", max:100},{name:"Paper 51", max:40}],
-        sessions: {}
+      "Core — Papers 11, 31, 51 (AX, grades C–G only)": {
+        officialMax: 200,
+        components: [{name:"Paper 11", max:60},{name:"Paper 31", max:60},{name:"Paper 51", max:40}],
+        weightNote: "Paper 51 is double-weighted by Cambridge (raw 40 counts as 80) so raw component maximums sum to 160 while the weighted overall maximum is 200. Core tier is capped at grade C.",
+        sessions: { "June 2025": {C:133,D:110,E:87,F:65,G:43} }
+      },
+      "Core — Papers 13, 33, 53 (AZ, grades C–G only)": {
+        officialMax: 200,
+        components: [{name:"Paper 13", max:60},{name:"Paper 33", max:60},{name:"Paper 53", max:40}],
+        weightNote: "Paper 53 is double-weighted by Cambridge (raw 40 counts as 80) so raw component maximums sum to 160 while the weighted overall maximum is 200. Core tier is capped at grade C.",
+        sessions: { "June 2025": {C:135,D:111,E:88,F:65,G:42} }
       }
     }
   },
@@ -219,10 +229,23 @@ const subjects = {
     name: "Biology",
     hasAstar: true,
     optionGroups: {
-      "Extended (Theory + Practical/MCQ)": {
-        officialMax: null,
-        components: [{name:"Paper 2 (Theory Extended)", max:80},{name:"Paper 4 (Alternative to Practical)", max:60},{name:"Paper 6 (Paper 3/MCQ)", max:40}],
-        sessions: {}
+      "Extended — Papers 21, 41, 51 (BX)": {
+        officialMax: 200,
+        components: [{name:"Paper 21 (Multiple Choice)", max:40},{name:"Paper 41 (Theory)", max:80},{name:"Paper 51 (Practical)", max:40}],
+        weightNote: "The practical component is double-weighted (raw 40 counts as 80) so raw maximums sum to 160 while the weighted overall maximum is 200.",
+        sessions: { "June 2025": {Ast:159,A:131,B:103,C:75,D:65,E:56,F:47,G:38}, "November 2025": {Ast:162,A:139,B:116,C:94,D:81,E:69,F:57,G:45} }
+      },
+      "Extended — Papers 22, 42, 52 (BY)": {
+        officialMax: 200,
+        components: [{name:"Paper 22 (Multiple Choice)", max:40},{name:"Paper 42 (Theory)", max:80},{name:"Paper 52 (Practical)", max:40}],
+        weightNote: "The practical component is double-weighted (raw 40 counts as 80) so raw maximums sum to 160 while the weighted overall maximum is 200.",
+        sessions: { "June 2025": {Ast:173,A:148,B:123,C:99,D:85,E:71,F:58,G:45}, "November 2025": {Ast:163,A:138,B:113,C:89,D:76,E:63,F:52,G:41} }
+      },
+      "Extended — Papers 23, 43, 53 (BZ)": {
+        officialMax: 200,
+        components: [{name:"Paper 23 (Multiple Choice)", max:40},{name:"Paper 43 (Theory)", max:80},{name:"Paper 53 (Practical)", max:40}],
+        weightNote: "The practical component is double-weighted (raw 40 counts as 80) so raw maximums sum to 160 while the weighted overall maximum is 200.",
+        sessions: { "June 2025": {Ast:156,A:131,B:106,C:81,D:69,E:58,F:48,G:38}, "November 2025": {Ast:164,A:140,B:116,C:92,D:79,E:66,F:55,G:44} }
       }
     }
   },
@@ -230,14 +253,20 @@ const subjects = {
     name: "Chemistry",
     hasAstar: true,
     optionGroups: {
-      "Extended — BX": { officialMax: null,
-        components: [{name:"Paper 2 (Theory Extended)", max:80},{name:"Alternative to Practical", max:60},{name:"Multiple Choice", max:40}],
+      "Extended — Papers 21, 41, 51 (BX)": {
+        officialMax: 200,
+        components: [{name:"Paper 21 (Multiple Choice)", max:40},{name:"Paper 41 (Theory)", max:80},{name:"Paper 51 (Practical)", max:40}],
+        weightNote: "The practical component is double-weighted (raw 40 counts as 80) so raw maximums sum to 160 while the weighted overall maximum is 200.",
         sessions: { "June 2025": {Ast:171,A:143,B:115,C:88,D:76,E:65,F:53,G:41} } },
-      "Extended — BY": { officialMax: null,
-        components: [{name:"Paper 2 (Theory Extended)", max:80},{name:"Alternative to Practical", max:60},{name:"Multiple Choice", max:40}],
+      "Extended — Papers 22, 42, 52 (BY)": {
+        officialMax: 200,
+        components: [{name:"Paper 22 (Multiple Choice)", max:40},{name:"Paper 42 (Theory)", max:80},{name:"Paper 52 (Practical)", max:40}],
+        weightNote: "The practical component is double-weighted (raw 40 counts as 80) so raw maximums sum to 160 while the weighted overall maximum is 200.",
         sessions: { "June 2025": {Ast:172,A:145,B:116,C:88,D:77,E:66,F:54,G:42} } },
-      "Extended — BZ": { officialMax: null,
-        components: [{name:"Paper 2 (Theory Extended)", max:80},{name:"Alternative to Practical", max:60},{name:"Multiple Choice", max:40}],
+      "Extended — Papers 23, 43, 53 (BZ)": {
+        officialMax: 200,
+        components: [{name:"Paper 23 (Multiple Choice)", max:40},{name:"Paper 43 (Theory)", max:80},{name:"Paper 53 (Practical)", max:40}],
+        weightNote: "The practical component is double-weighted (raw 40 counts as 80) so raw maximums sum to 160 while the weighted overall maximum is 200.",
         sessions: { "June 2025": {Ast:173,A:146,B:117,C:88,D:75,E:63,F:52,G:41} } }
     }
   },
@@ -245,29 +274,41 @@ const subjects = {
     name: "Physics",
     hasAstar: true,
     optionGroups: {
-      "Extended — BX": { officialMax: null,
-        components: [{name:"Paper 2 (Theory Extended)", max:80},{name:"Alternative to Practical", max:60},{name:"Multiple Choice", max:40}],
-        sessions: { "June 2025": {Ast:147,A:123,B:99,C:75,D:67,E:60,F:53,G:46} } },
-      "Extended — BY": { officialMax: null,
-        components: [{name:"Paper 2 (Theory Extended)", max:80},{name:"Alternative to Practical", max:60},{name:"Multiple Choice", max:40}],
-        sessions: { "June 2025": {Ast:154,A:128,B:102,C:77,D:66,E:56,F:47,G:38} } },
-      "Extended — BZ": { officialMax: null,
-        components: [{name:"Paper 2 (Theory Extended)", max:80},{name:"Alternative to Practical", max:60},{name:"Multiple Choice", max:40}],
-        sessions: { "June 2025": {Ast:143,A:122,B:101,C:81,D:69,E:58,F:48,G:38} } }
+      "Extended — Papers 21, 41, 51 (BX)": {
+        officialMax: 200,
+        components: [{name:"Paper 21 (Multiple Choice)", max:40},{name:"Paper 41 (Theory)", max:80},{name:"Paper 51 (Practical)", max:40}],
+        weightNote: "The practical component is double-weighted (raw 40 counts as 80) so raw maximums sum to 160 while the weighted overall maximum is 200.",
+        sessions: { "June 2025": {Ast:147,A:123,B:99,C:75,D:67,E:60,F:53,G:46}, "November 2025": {Ast:151,A:131,B:111,C:92,D:79,E:67,F:54,G:41} } },
+      "Extended — Papers 22, 42, 52 (BY)": {
+        officialMax: 200,
+        components: [{name:"Paper 22 (Multiple Choice)", max:40},{name:"Paper 42 (Theory)", max:80},{name:"Paper 52 (Practical)", max:40}],
+        weightNote: "The practical component is double-weighted (raw 40 counts as 80) so raw maximums sum to 160 while the weighted overall maximum is 200.",
+        sessions: { "June 2025": {Ast:154,A:128,B:102,C:77,D:66,E:56,F:47,G:38}, "November 2025": {Ast:145,A:125,B:105,C:85,D:73,E:61,F:51,G:41} } },
+      "Extended — Papers 23, 43, 53 (BZ)": {
+        officialMax: 200,
+        components: [{name:"Paper 23 (Multiple Choice)", max:40},{name:"Paper 43 (Theory)", max:80},{name:"Paper 53 (Practical)", max:40}],
+        weightNote: "The practical component is double-weighted (raw 40 counts as 80) so raw maximums sum to 160 while the weighted overall maximum is 200.",
+        sessions: { "June 2025": {Ast:143,A:122,B:101,C:81,D:69,E:58,F:48,G:38}, "November 2025": {Ast:146,A:126,B:106,C:87,D:74,E:62,F:51,G:40} } }
     }
   },
   "0417": {
     name: "Information and Communication Technology",
     hasAstar: true,
     optionGroups: {
-      "AX": { officialMax: 280, approxMax:true,
-        components: [{name:"Paper 2 (Document Production)", max:80},{name:"Paper 3 (Data Analysis)", max:70},{name:"Paper 12 (Practical)", max:130}],
+      "Papers 11, 21, 31 (AX)": {
+        officialMax: 280, approxMax: true,
+        components: [{name:"Paper 11 (Theory)", max:80},{name:"Paper 21 (Document Production, Databases & Presentations)", max:70},{name:"Paper 31 (Data Analysis & Website Authoring)", max:70}],
+        weightNote: "Cambridge applies a weighting factor to reach the overall maximum of 280 from raw maximums that sum to 220; the exact factor per paper could not be verified, so raw-mark validation limits above are the component maximums only.",
         sessions: { "June 2025": {Ast:196,A:166,B:136,C:107,D:89,E:72,F:54,G:36} } },
-      "AY": { officialMax: 280, approxMax:true,
-        components: [{name:"Paper 2 (Document Production)", max:80},{name:"Paper 3 (Data Analysis)", max:70},{name:"Paper 12 (Practical)", max:130}],
+      "Papers 12, 21, 31 (AY)": {
+        officialMax: 280, approxMax: true,
+        components: [{name:"Paper 12 (Theory)", max:80},{name:"Paper 21 (Document Production, Databases & Presentations)", max:70},{name:"Paper 31 (Data Analysis & Website Authoring)", max:70}],
+        weightNote: "Cambridge applies a weighting factor to reach the overall maximum of 280 from raw maximums that sum to 220; the exact factor per paper could not be verified, so raw-mark validation limits above are the component maximums only.",
         sessions: { "June 2025": {Ast:198,A:168,B:138,C:109,D:91,E:73,F:56,G:38} } },
-      "AZ": { officialMax: 280, approxMax:true,
-        components: [{name:"Paper 2 (Document Production)", max:80},{name:"Paper 3 (Data Analysis)", max:70},{name:"Paper 12 (Practical)", max:130}],
+      "Papers 13, 21, 31 (AZ)": {
+        officialMax: 280, approxMax: true,
+        components: [{name:"Paper 13 (Theory)", max:80},{name:"Paper 21 (Document Production, Databases & Presentations)", max:70},{name:"Paper 31 (Data Analysis & Website Authoring)", max:70}],
+        weightNote: "Cambridge applies a weighting factor to reach the overall maximum of 280 from raw maximums that sum to 220; the exact factor per paper could not be verified, so raw-mark validation limits above are the component maximums only.",
         sessions: { "June 2025": {Ast:194,A:165,B:136,C:107,D:89,E:72,F:54,G:36} } }
     }
   },
@@ -275,35 +316,47 @@ const subjects = {
     name: "English as a Second Language",
     hasAstar: true,
     optionGroups: {
-      "AX": { officialMax: 150, approxMax:true,
-        components: [{name:"Reading & Writing", max:90},{name:"Listening", max:40},{name:"Speaking (Coursework/Test)", max:20}],
+      "Papers 11, 21, 31 (AX)": {
+        officialMax: 150, approxMax: true,
+        components: [{name:"Paper 11 (Reading & Writing)", max:60},{name:"Paper 21 (Listening)", max:40},{name:"Paper 31 (Speaking, internally assessed)", max:40}],
+        weightNote: "The speaking component is separately weighted into the overall mark; the exact factor could not be verified, so this is an approximate breakdown of the published 150-mark overall maximum.",
         sessions: { "June 2025": {Ast:142,A:135,B:125,C:116,D:103,E:91,F:79,G:66} } },
-      "AY": { officialMax: 150, approxMax:true,
-        components: [{name:"Reading & Writing", max:90},{name:"Listening", max:40},{name:"Speaking (Coursework/Test)", max:20}],
-        sessions: { "June 2025": {Ast:142,A:135,B:121,C:108,D:96,E:85,F:75,G:65} } }
+      "Papers 12, 22, 32 (AY)": {
+        officialMax: 150, approxMax: true,
+        components: [{name:"Paper 12 (Reading & Writing)", max:60},{name:"Paper 22 (Listening)", max:40},{name:"Paper 32 (Speaking, internally assessed)", max:40}],
+        weightNote: "The speaking component is separately weighted into the overall mark; the exact factor could not be verified, so this is an approximate breakdown of the published 150-mark overall maximum.",
+        sessions: { "June 2025": {Ast:142,A:135,B:121,C:108,D:96,E:85,F:75,G:65} } },
+      "Papers 13, 23, 33 (AZ)": {
+        officialMax: 150, approxMax: true,
+        components: [{name:"Paper 13 (Reading & Writing)", max:60},{name:"Paper 23 (Listening)", max:40},{name:"Paper 33 (Speaking, internally assessed)", max:40}],
+        weightNote: "The speaking component is separately weighted into the overall mark; the exact factor could not be verified, so this is an approximate breakdown of the published 150-mark overall maximum.",
+        sessions: { "June 2025": {Ast:142,A:135,B:125,C:116,D:103,E:91,F:79,G:66} } }
     }
   },
   "0500": {
     name: "First Language English",
     hasAstar: true,
     optionGroups: {
-      "AR": { officialMax: 160, approxMax:true,
-        components: [{name:"Paper 1 (Reading)", max:80},{name:"Paper 2 (Directed Writing & Composition)", max:80}],
-        sessions: { "June 2025": {Ast:120,A:106,B:92,C:79,D:66,E:54,F:41,G:28} } },
-      "AS": { officialMax: 160, approxMax:true,
-        components: [{name:"Paper 1 (Reading)", max:80},{name:"Paper 2 (Directed Writing & Composition)", max:80}],
+      "Papers 11, 21 (BR, no oral endorsement)": {
+        officialMax: 160,
+        components: [{name:"Paper 11 (Reading)", max:80},{name:"Paper 21 (Directed Writing & Composition)", max:80}],
         sessions: { "June 2025": {Ast:116,A:103,B:90,C:78,D:66,E:54,F:41,G:28} } },
-      "AT": { officialMax: 160, approxMax:true,
-        components: [{name:"Paper 1 (Reading)", max:80},{name:"Paper 2 (Directed Writing & Composition)", max:80}],
-        sessions: { "June 2025": {Ast:115,A:102,B:89,C:77,D:65,E:53,F:40,G:27} } }
+      "Papers 12, 22 (BS, no oral endorsement)": {
+        officialMax: 160,
+        components: [{name:"Paper 12 (Reading)", max:80},{name:"Paper 22 (Directed Writing & Composition)", max:80}],
+        sessions: { "June 2025": {Ast:109,A:98,B:87,C:76,D:65,E:54,F:41,G:28} } },
+      "Papers 13, 23 (BT, no oral endorsement)": {
+        officialMax: 160,
+        components: [{name:"Paper 13 (Reading)", max:80},{name:"Paper 23 (Directed Writing & Composition)", max:80}],
+        sessions: { "June 2025": {Ast:111,A:99,B:87,C:76,D:64,E:53,F:40,G:27} } }
     }
   },
   "3226": {
     name: "Tamil",
     hasAstar: true,
     optionGroups: {
-      "Standard": { officialMax: 100, approxMax:true,
-        components: [{name:"Paper 01", max:50},{name:"Paper 02", max:50}],
+      "Papers 01, 02": { officialMax: 100,
+        components: [{name:"Paper 01 (Composition)", max:45},{name:"Paper 02 (Comprehension & Language Use)", max:55}],
         sessions: { "June 2025": {Ast:91,A:82,B:70,C:58,D:47,E:37} } }
     }
   }
@@ -473,7 +526,7 @@ function calculateHistoricalAverage(opt, gradeKey){
 
 function calculateGrade(pct, opt){
   // Compare against historical-average percentage thresholds where available.
-  const order = opt.hasAstarData !== false ? GRADE_ORDER : GRADE_ORDER;
+  const order = GRADE_ORDER;
   const thresholds = {};
   let any = false;
   order.forEach(g => {
@@ -746,6 +799,7 @@ function renderSubjectReports(results){
           <strong>Historical threshold estimate</strong> — derived from published Cambridge grade thresholds for option "${r.optName}", converted to a percentage of the option's overall maximum (${r.opt.officialMax}). Not an official prediction of the next series.<br>
           ${aLine}<br>${astarLine}${statusLine ? "<br>" + statusLine : ""}
           <br><em>Planning target adds a ${PLANNING_BUFFER_PCT}-point buffer above the historical average. This is a planning target, not an official Cambridge requirement.</em>
+          ${r.opt.weightNote ? `<br><em>${escapeHtml(r.opt.weightNote)}</em>` : ""}
         </div>`;
     } else {
       targetsHtml = `<div class="disclaimer">No verified historical threshold data is available for ${r.code} — "${r.optName}" yet. Estimate based on available historical threshold data could not be produced; only your raw percentage is shown above.</div>`;
