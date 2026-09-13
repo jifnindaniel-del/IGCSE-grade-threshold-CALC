@@ -1,0 +1,823 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Cambridge IGCSE threshold and paper performance analyzer. Enter Mock 1 and Mock 2 marks for every component and get a paper-by-paper improvement plan.">
+<title>IGCSE Threshold &amp; Paper Analyzer</title>
+<style>
+  :root{
+    --navy:#16233d; --navy-soft:#3c4b6b; --line:#dde3ee; --bg:#f4f6fb; --card:#ffffff;
+    --blue:#2f5fb3; --blue-soft:#eaf1fc;
+    --green:#1f7a4d; --green-soft:#e7f6ee;
+    --amber:#93650a; --amber-soft:#fdf2df;
+    --red:#a4222a; --red-soft:#fbe9ea;
+    --radius:14px;
+    /* accent used by header + buttons */
+    --accent1:#2f5fb3; --accent2:#7c3fd4; --accent3:#0f9d7c;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--navy);font-family:Arial,Helvetica,sans-serif;line-height:1.5}
+  a{color:var(--blue)}
+  .wrap{max-width:1080px;margin:0 auto;padding:20px 16px 60px}
+  header.top{padding:28px 0 8px;position:relative}
+  header.top::before{content:"";display:block;width:64px;height:6px;border-radius:99px;margin-bottom:14px;
+    background:linear-gradient(90deg,var(--accent1),var(--accent2) 55%,var(--accent3))}
+  header.top h1{margin:0 0 6px;font-size:28px;background:linear-gradient(90deg,var(--accent1),var(--accent2));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  header.top p{margin:0;color:var(--navy-soft);max-width:70ch}
+  .steps{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 6px}
+  .step-pill{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;font-size:13px;color:var(--navy-soft)}
+  .step-pill.active{border-color:var(--blue);color:var(--blue);font-weight:700}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin:16px 0}
+  section.card > h2{margin-top:0;font-size:19px;border-bottom:1px solid var(--line);padding-bottom:12px}
+  .muted{color:var(--navy-soft);font-size:14px}
+  .subject-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .subject-card{border:1px solid var(--line);border-left:5px solid var(--accent,var(--blue));border-radius:10px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;cursor:pointer;background:#fff;transition:background .12s,border-color .12s}
+  .subject-card:has(input:checked){border-color:var(--accent,var(--blue));border-left-color:var(--accent,var(--blue));background:color-mix(in srgb, var(--accent,var(--blue)) 10%, white)}
+  .subject-card input{margin-top:3px;width:16px;height:16px;flex:none;accent-color:var(--accent,var(--blue))}
+  .subject-card .code{font-weight:700;display:block;color:var(--accent,var(--navy))}
+  .subject-card .sname{font-size:13px;color:var(--navy-soft)}
+  fieldset{border:1px solid var(--line);border-top:4px solid var(--accent,var(--blue));border-radius:10px;padding:14px;margin:0 0 16px}
+  legend{font-weight:700;padding:0 6px;color:var(--accent,var(--navy))}
+  label{display:block;font-size:13px;font-weight:700;margin:0 0 5px}
+  select,input[type=number],input[type=text],textarea{
+    width:100%;padding:10px;border:1px solid #c9d1e0;border-radius:8px;font-family:inherit;font-size:14px;background:#fff;color:var(--navy)
+  }
+  select:focus,input:focus,textarea:focus,button:focus{outline:3px solid var(--blue);outline-offset:1px}
+  textarea{resize:vertical;min-height:44px}
+  .option-select{max-width:520px;margin-bottom:14px}
+  .paper-row{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:12px;border-top:1px solid var(--line);padding:14px 0}
+  .paper-row:first-of-type{border-top:none}
+  .paper-name{font-weight:700}
+  .paper-max{font-size:12px;color:var(--navy-soft)}
+  .paper-notes{grid-column:1 / -1;margin-top:6px}
+  .field-error{color:var(--red);font-size:12px;margin-top:4px;display:block}
+  .actions{display:flex;flex-wrap:wrap;gap:10px}
+  button{border:1px solid transparent;border-radius:9px;padding:11px 18px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+  button.primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff;box-shadow:0 4px 14px rgba(47,95,179,.28)}
+  button.primary:hover{filter:brightness(1.06)}
+  button.secondary{background:#fff;color:var(--navy);border-color:var(--line)}
+  button.secondary:hover{border-color:var(--accent1);color:var(--accent1)}
+  button.ghost{background:transparent;color:var(--navy-soft);border-color:var(--line)}
+  #globalMsg{margin-top:10px;font-weight:700}
+  #globalMsg.error{color:var(--red)}
+  #globalMsg.ok{color:var(--green)}
+  .hide{display:none !important}
+  .dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+  .dash-item{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px}
+  .dash-item .n{font-size:26px;font-weight:800;display:block}
+  .dash-item .l{font-size:12px;color:var(--navy-soft)}
+  .subject-report{border:1px solid var(--line);border-left:6px solid var(--accent,var(--blue));border-radius:var(--radius);margin:16px 0;overflow:hidden}
+  .subject-report > .head{background:color-mix(in srgb, var(--accent,var(--blue)) 7%, var(--bg));padding:16px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;align-items:center}
+  .subject-report > .head h3{margin:0;font-size:17px;color:var(--accent,var(--navy))}
+  .grade-chip{display:inline-block;padding:4px 12px;border-radius:999px;font-weight:800;font-size:13px;border:1px solid transparent}
+  .grade-chip.g-astar{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+  .grade-chip.g-a{background:var(--green-soft);color:var(--green)}
+  .grade-chip.g-mid{background:var(--amber-soft);color:var(--amber)}
+  .grade-chip.g-low{background:var(--red-soft);color:var(--red)}
+  .grade-chip.g-na{background:#eef0f5;color:var(--navy-soft)}
+  .subject-report .body{padding:18px 20px}
+  .mock-compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+  @media(max-width:560px){.mock-compare{grid-template-columns:1fr}}
+  .mock-box{border:1px solid var(--line);border-radius:10px;padding:12px}
+  .mock-box h4{margin:0 0 8px;font-size:13px;text-transform:none;color:var(--navy-soft)}
+  .big{font-size:22px;font-weight:800;display:block}
+  .trend{font-size:13px;font-weight:700;margin-top:8px}
+  .trend.up{color:var(--green)} .trend.down{color:var(--red)} .trend.flat{color:var(--navy-soft)}
+  table.paper-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+  table.paper-table caption{text-align:left;font-weight:700;margin-bottom:6px}
+  table.paper-table th,table.paper-table td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+  .bar-track{background:#e9edf5;border-radius:999px;height:9px;overflow:hidden;min-width:90px}
+  .bar-fill{height:100%;border-radius:999px}
+  .bar-fill.ok{background:var(--green)} .bar-fill.mid{background:var(--amber)} .bar-fill.low{background:var(--red)}
+  .priority-tag{font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px}
+  .priority-tag.high{background:var(--red-soft);color:var(--red)}
+  .priority-tag.medium{background:var(--amber-soft);color:var(--amber)}
+  .priority-tag.low{background:var(--green-soft);color:var(--green)}
+  .improve-item{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0}
+  .improve-item .notes{margin-top:8px;font-size:13px;background:var(--bg);border-radius:8px;padding:8px 10px}
+  .disclaimer{background:var(--bg);border:1px dashed var(--line);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--navy-soft);margin:14px 0}
+  footer.site{margin-top:30px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--navy-soft)}
+  footer.site p{margin:4px 0}
+  @media(max-width:640px){
+    .wrap{padding:14px 10px 50px}
+    section.card{padding:16px;border-radius:10px}
+    .paper-row{grid-template-columns:1fr 1fr;row-gap:8px}
+    .paper-row .paper-name-cell{grid-column:1 / -1}
+    table.paper-table{display:block;overflow-x:auto;white-space:nowrap}
+    .subject-report > .head{flex-direction:column;align-items:flex-start}
+  }
+  @media print{
+    body{background:#fff}
+    .no-print{display:none !important}
+    section.card{box-shadow:none;border:1px solid #999;break-inside:avoid}
+    .subject-report{break-inside:avoid}
+    .wrap{max-width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>IGCSE Threshold &amp; Paper Analyzer</h1>
+    <p>Select your subjects, enter marks for every paper you sit, and get a component-by-component plan for what to improve before the next mock or the real exam.</p>
+  </header>
+
+  <nav class="steps no-print" aria-label="Workflow steps">
+    <span class="step-pill active">1. Select subjects</span>
+    <span class="step-pill">2. Choose your paper combination</span>
+    <span class="step-pill">3. Enter Mock 1 &amp; Mock 2 marks</span>
+    <span class="step-pill">4. Add weak-topic notes</span>
+    <span class="step-pill">5. Analyze results</span>
+  </nav>
+
+  <section class="card" id="subjectSection">
+    <h2>1. Select your subjects</h2>
+    <p class="muted">Choose every subject you want included in this report.</p>
+    <div class="subject-grid" id="subjectGrid"></div>
+  </section>
+
+  <section class="card" id="entrySection">
+    <h2>2 &amp; 3. Paper combination and marks</h2>
+    <p class="muted">For each subject, choose the paper/component combination you actually sit, then enter Mock 1 and Mock 2 marks for every paper. Leave a box blank if you have not sat that mock yet — a blank is treated as "not entered", never as zero.</p>
+    <div id="entryContainer"><p class="muted">Select at least one subject above to begin.</p></div>
+  </section>
+
+  <section class="card no-print">
+    <div class="actions">
+      <button class="primary" onclick="analyze()">Analyze results</button>
+      <button class="secondary" onclick="resetAll()">Reset</button>
+      <button class="secondary" onclick="printReport()">Print report</button>
+      <button class="ghost" onclick="saveLocally()">Save locally</button>
+      <button class="ghost" onclick="clearSaved()">Clear saved data</button>
+    </div>
+    <p id="globalMsg" role="status"></p>
+  </section>
+
+  <section class="card hide" id="reportSection">
+    <h2>Results dashboard</h2>
+    <div class="dash-grid" id="dashboard"></div>
+    <p class="disclaimer">Thresholds vary between examination series because Cambridge adjusts them according to paper difficulty. Historical averages are useful for planning but are not predictions of the next official threshold.</p>
+    <div id="subjectReports"></div>
+  </section>
+
+  <section class="card">
+    <h2>How this calculator works</h2>
+    <p class="muted">Your percentage for each subject is your entered marks divided by the maximum marks of the papers you entered. Where verified Cambridge grade-threshold data is available for your exact option, it is converted to a percentage of that option's published overall maximum and shown as a <strong>historical threshold estimate</strong>, alongside the average across whichever sessions are on record. Where no verified threshold data exists for a subject or option, this is stated plainly instead of guessing. Component maximum marks shown during entry are approximate where the exact figure could not be verified — check your own exam timetable/paper if you need the exact figure. Nothing here is an <strong>official Cambridge threshold</strong> unless labelled as such.</p>
+  </section>
+
+  <footer class="site">
+    <p><strong>IGCSE Threshold &amp; Paper Analyzer</strong></p>
+    <p>Historical thresholds are estimates based on available Cambridge threshold data. Actual grade thresholds can vary by examination series.</p>
+    <p>All calculations happen in your browser. No marks are uploaded to a server. No accounts, analytics, or tracking are used.</p>
+    <p>Not affiliated with Cambridge International.</p>
+  </footer>
+
+</div>
+
+<script>
+/* =========================================================
+   1. DATA
+   Component maximums are approximate unless noted; historical
+   threshold rows are converted to percentages of each option's
+   published overall maximum mark. Only sessions that could be
+   sourced are included — nothing is invented for a missing
+   session, grade, or option.
+   ========================================================= */
+
+const subjects = {
+  "0607": {
+    name: "International Mathematics",
+    hasAstar: true,
+    optionGroups: {
+      "Extended — Papers 21, 41, 61": {
+        officialMax: 250, approxMax: true,
+        components: [{name:"Paper 21", max:75},{name:"Paper 41", max:130},{name:"Paper 61", max:45}],
+        sessions: { "June 2025": {Ast:211,A:173,B:133,C:94,D:74,E:55}, "November 2025": {Ast:193,A:155,B:117,C:80,D:59,E:38} }
+      },
+      "Extended — Papers 22, 42, 62": {
+        officialMax: 250, approxMax: true,
+        components: [{name:"Paper 22", max:75},{name:"Paper 42", max:130},{name:"Paper 62", max:45}],
+        sessions: { "June 2025": {Ast:216,A:183,B:141,C:100,D:79,E:58}, "November 2025": {Ast:219,A:189,B:145,C:102,D:81,E:61} }
+      },
+      "Extended — Papers 23, 43, 63": {
+        officialMax: 250, approxMax: true,
+        components: [{name:"Paper 23", max:75},{name:"Paper 43", max:130},{name:"Paper 63", max:45}],
+        sessions: { "June 2025": {Ast:214,A:179,B:138,C:97,D:77,E:58}, "November 2025": {Ast:212,A:174,B:136,C:98,D:77,E:57} }
+      },
+      "Core — Papers 11, 31, 51": {
+        officialMax: null,
+        components: [{name:"Paper 11", max:56},{name:"Paper 31", max:100},{name:"Paper 51", max:40}],
+        sessions: {}
+      }
+    }
+  },
+  "0610": {
+    name: "Biology",
+    hasAstar: true,
+    optionGroups: {
+      "Extended (Theory + Practical/MCQ)": {
+        officialMax: null,
+        components: [{name:"Paper 2 (Theory Extended)", max:80},{name:"Paper 4 (Alternative to Practical)", max:60},{name:"Paper 6 (Paper 3/MCQ)", max:40}],
+        sessions: {}
+      }
+    }
+  },
+  "0620": {
+    name: "Chemistry",
+    hasAstar: true,
+    optionGroups: {
+      "Extended — BX": { officialMax: null,
+        components: [{name:"Paper 2 (Theory Extended)", max:80},{name:"Alternative to Practical", max:60},{name:"Multiple Choice", max:40}],
+        sessions: { "June 2025": {Ast:171,A:143,B:115,C:88,D:76,E:65,F:53,G:41} } },
+      "Extended — BY": { officialMax: null,
+        components: [{name:"Paper 2 (Theory Extended)", max:80},{name:"Alternative to Practical", max:60},{name:"Multiple Choice", max:40}],
+        sessions: { "June 2025": {Ast:172,A:145,B:116,C:88,D:77,E:66,F:54,G:42} } },
+      "Extended — BZ": { officialMax: null,
+        components: [{name:"Paper 2 (Theory Extended)", max:80},{name:"Alternative to Practical", max:60},{name:"Multiple Choice", max:40}],
+        sessions: { "June 2025": {Ast:173,A:146,B:117,C:88,D:75,E:63,F:52,G:41} } }
+    }
+  },
+  "0625": {
+    name: "Physics",
+    hasAstar: true,
+    optionGroups: {
+      "Extended — BX": { officialMax: null,
+        components: [{name:"Paper 2 (Theory Extended)", max:80},{name:"Alternative to Practical", max:60},{name:"Multiple Choice", max:40}],
+        sessions: { "June 2025": {Ast:147,A:123,B:99,C:75,D:67,E:60,F:53,G:46} } },
+      "Extended — BY": { officialMax: null,
+        components: [{name:"Paper 2 (Theory Extended)", max:80},{name:"Alternative to Practical", max:60},{name:"Multiple Choice", max:40}],
+        sessions: { "June 2025": {Ast:154,A:128,B:102,C:77,D:66,E:56,F:47,G:38} } },
+      "Extended — BZ": { officialMax: null,
+        components: [{name:"Paper 2 (Theory Extended)", max:80},{name:"Alternative to Practical", max:60},{name:"Multiple Choice", max:40}],
+        sessions: { "June 2025": {Ast:143,A:122,B:101,C:81,D:69,E:58,F:48,G:38} } }
+    }
+  },
+  "0417": {
+    name: "Information and Communication Technology",
+    hasAstar: true,
+    optionGroups: {
+      "AX": { officialMax: 280, approxMax:true,
+        components: [{name:"Paper 2 (Document Production)", max:80},{name:"Paper 3 (Data Analysis)", max:70},{name:"Paper 12 (Practical)", max:130}],
+        sessions: { "June 2025": {Ast:196,A:166,B:136,C:107,D:89,E:72,F:54,G:36} } },
+      "AY": { officialMax: 280, approxMax:true,
+        components: [{name:"Paper 2 (Document Production)", max:80},{name:"Paper 3 (Data Analysis)", max:70},{name:"Paper 12 (Practical)", max:130}],
+        sessions: { "June 2025": {Ast:198,A:168,B:138,C:109,D:91,E:73,F:56,G:38} } },
+      "AZ": { officialMax: 280, approxMax:true,
+        components: [{name:"Paper 2 (Document Production)", max:80},{name:"Paper 3 (Data Analysis)", max:70},{name:"Paper 12 (Practical)", max:130}],
+        sessions: { "June 2025": {Ast:194,A:165,B:136,C:107,D:89,E:72,F:54,G:36} } }
+    }
+  },
+  "0510": {
+    name: "English as a Second Language",
+    hasAstar: true,
+    optionGroups: {
+      "AX": { officialMax: 150, approxMax:true,
+        components: [{name:"Reading & Writing", max:90},{name:"Listening", max:40},{name:"Speaking (Coursework/Test)", max:20}],
+        sessions: { "June 2025": {Ast:142,A:135,B:125,C:116,D:103,E:91,F:79,G:66} } },
+      "AY": { officialMax: 150, approxMax:true,
+        components: [{name:"Reading & Writing", max:90},{name:"Listening", max:40},{name:"Speaking (Coursework/Test)", max:20}],
+        sessions: { "June 2025": {Ast:142,A:135,B:121,C:108,D:96,E:85,F:75,G:65} } }
+    }
+  },
+  "0500": {
+    name: "First Language English",
+    hasAstar: true,
+    optionGroups: {
+      "AR": { officialMax: 160, approxMax:true,
+        components: [{name:"Paper 1 (Reading)", max:80},{name:"Paper 2 (Directed Writing & Composition)", max:80}],
+        sessions: { "June 2025": {Ast:120,A:106,B:92,C:79,D:66,E:54,F:41,G:28} } },
+      "AS": { officialMax: 160, approxMax:true,
+        components: [{name:"Paper 1 (Reading)", max:80},{name:"Paper 2 (Directed Writing & Composition)", max:80}],
+        sessions: { "June 2025": {Ast:116,A:103,B:90,C:78,D:66,E:54,F:41,G:28} } },
+      "AT": { officialMax: 160, approxMax:true,
+        components: [{name:"Paper 1 (Reading)", max:80},{name:"Paper 2 (Directed Writing & Composition)", max:80}],
+        sessions: { "June 2025": {Ast:115,A:102,B:89,C:77,D:65,E:53,F:40,G:27} } }
+    }
+  },
+  "3226": {
+    name: "Tamil",
+    hasAstar: true,
+    optionGroups: {
+      "Standard": { officialMax: 100, approxMax:true,
+        components: [{name:"Paper 01", max:50},{name:"Paper 02", max:50}],
+        sessions: { "June 2025": {Ast:91,A:82,B:70,C:58,D:47,E:37} } }
+    }
+  }
+};
+
+const GRADE_ORDER = ["Ast","A","B","C","D","E","F","G"];
+const GRADE_LABEL = {Ast:"A*",A:"A",B:"B",C:"C",D:"D",E:"E",F:"F",G:"G"};
+const PLANNING_BUFFER_PCT = 2; // percentage points, per spec section 14
+
+const selectedSubjects = new Set();
+const chosenOption = {};   // code -> option name
+const STORAGE_KEY = "igcseAnalyzerData.v1";
+
+// One accent color per subject, cycled from this palette in the order subjects appear.
+const SUBJECT_PALETTE = ["#2f5fb3","#0f9d7c","#c0562b","#7c3fd4","#0a8fa6","#b03a63","#4d7c1f","#a4222a"];
+const subjectColor = {};
+Object.keys(subjects).forEach((code, i) => { subjectColor[code] = SUBJECT_PALETTE[i % SUBJECT_PALETTE.length]; });
+
+/* =========================================================
+   2. SUBJECT SELECTION UI
+   ========================================================= */
+function buildSubjectGrid(){
+  const grid = document.getElementById("subjectGrid");
+  grid.innerHTML = "";
+  Object.entries(subjects).forEach(([code, s]) => {
+    const label = document.createElement("label");
+    label.className = "subject-card";
+    label.style.setProperty("--accent", subjectColor[code]);
+    label.innerHTML = `
+      <input type="checkbox" value="${code}" aria-describedby="sub-${code}-name">
+      <span>
+        <span class="code">${code}</span>
+        <span class="sname" id="sub-${code}-name">${s.name}</span>
+      </span>`;
+    label.querySelector("input").addEventListener("change", (e) => {
+      if (e.target.checked) selectedSubjects.add(code); else selectedSubjects.delete(code);
+      buildEntryForms();
+    });
+    grid.appendChild(label);
+  });
+}
+
+/* =========================================================
+   3. PAPER ENTRY FORMS
+   ========================================================= */
+function buildEntryForms(){
+  const container = document.getElementById("entryContainer");
+  container.innerHTML = "";
+  if (!selectedSubjects.size){
+    container.innerHTML = '<p class="muted">Select at least one subject above to begin.</p>';
+    return;
+  }
+  selectedSubjects.forEach(code => {
+    const s = subjects[code];
+    const fs = document.createElement("fieldset");
+    fs.id = `fs-${code}`;
+    fs.style.setProperty("--accent", subjectColor[code]);
+    const optionNames = Object.keys(s.optionGroups);
+    if (!chosenOption[code]) chosenOption[code] = optionNames[0];
+
+    fs.innerHTML = `
+      <legend>${code} — ${s.name}</legend>
+      <div class="option-select">
+        <label for="opt-${code}">Paper combination / option</label>
+        <select id="opt-${code}" aria-label="Paper combination for ${s.name}">
+          ${optionNames.map(o => `<option value="${escapeAttr(o)}">${o}</option>`).join("")}
+        </select>
+      </div>
+      <div id="papers-${code}"></div>
+    `;
+    container.appendChild(fs);
+    fs.querySelector(`#opt-${code}`).value = chosenOption[code];
+    fs.querySelector(`#opt-${code}`).addEventListener("change", (e) => {
+      chosenOption[code] = e.target.value;
+      buildPaperRows(code);
+    });
+    buildPaperRows(code);
+  });
+}
+
+function buildPaperRows(code){
+  const s = subjects[code];
+  const opt = s.optionGroups[chosenOption[code]];
+  const box = document.getElementById(`papers-${code}`);
+  box.innerHTML = "";
+  if (opt.approxMax){
+    const note = document.createElement("p");
+    note.className = "muted";
+    note.textContent = "Component maximum marks below are approximate — check your own paper/timetable if you need the exact figure.";
+    box.appendChild(note);
+  }
+  opt.components.forEach((comp, i) => {
+    const row = document.createElement("div");
+    row.className = "paper-row";
+    const m1id = `m1-${code}-${i}`, m2id = `m2-${code}-${i}`, noteId = `note-${code}-${i}`;
+    row.innerHTML = `
+      <div class="paper-name-cell">
+        <span class="paper-name">${comp.name}</span>
+        <span class="paper-max">Maximum: ${comp.max} marks</span>
+      </div>
+      <div>
+        <label for="${m1id}">Mock 1</label>
+        <input type="number" id="${m1id}" min="0" max="${comp.max}" step="0.5" placeholder="Not entered">
+        <span class="field-error hide" id="err-${m1id}"></span>
+      </div>
+      <div>
+        <label for="${m2id}">Mock 2</label>
+        <input type="number" id="${m2id}" min="0" max="${comp.max}" step="0.5" placeholder="Not entered">
+        <span class="field-error hide" id="err-${m2id}"></span>
+      </div>
+      <div class="paper-notes">
+        <label for="${noteId}">Weak topics / notes (optional)</label>
+        <textarea id="${noteId}" placeholder="e.g. electricity, forces, practical calculations"></textarea>
+      </div>
+    `;
+    box.appendChild(row);
+    [m1id, m2id].forEach(id => {
+      document.getElementById(id).addEventListener("input", (e) => validateMarkField(e.target, comp.max));
+    });
+  });
+}
+
+function validateMarkField(input, max){
+  const errEl = document.getElementById(`err-${input.id}`);
+  const v = input.value.trim();
+  if (v === ""){ errEl.classList.add("hide"); errEl.textContent = ""; return true; }
+  const n = Number(v);
+  if (!Number.isFinite(n) || n < 0){
+    errEl.textContent = "Enter a mark of 0 or higher."; errEl.classList.remove("hide"); return false;
+  }
+  if (n > max){
+    errEl.textContent = `Mark cannot exceed ${max}.`; errEl.classList.remove("hide"); return false;
+  }
+  errEl.classList.add("hide"); errEl.textContent = ""; return true;
+}
+
+function escapeAttr(str){ return String(str).replace(/"/g,"&quot;"); }
+function escapeHtml(str){ return String(str).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+
+/* =========================================================
+   4. CALCULATION HELPERS
+   ========================================================= */
+function readMark(id){
+  const el = document.getElementById(id);
+  if (!el) return null;
+  const v = el.value.trim();
+  if (v === "") return null;
+  const n = Number(v);
+  return Number.isFinite(n) && n >= 0 ? n : null;
+}
+
+function calculateComponentPercentage(mark, max){
+  if (mark === null || !max) return null;
+  return (mark / max) * 100;
+}
+
+// Historical average threshold (as % of officialMax) across recorded sessions, for one grade key.
+function calculateHistoricalAverage(opt, gradeKey){
+  if (!opt.officialMax || !opt.sessions) return null;
+  const vals = Object.values(opt.sessions)
+    .map(s => s[gradeKey])
+    .filter(v => typeof v === "number")
+    .map(v => (v / opt.officialMax) * 100);
+  if (!vals.length) return null;
+  return { avgPct: vals.reduce((a,b)=>a+b,0) / vals.length, count: vals.length };
+}
+
+function calculateGrade(pct, opt){
+  // Compare against historical-average percentage thresholds where available.
+  const order = opt.hasAstarData !== false ? GRADE_ORDER : GRADE_ORDER;
+  const thresholds = {};
+  let any = false;
+  order.forEach(g => {
+    const h = calculateHistoricalAverage(opt, g);
+    if (h){ thresholds[g] = h.avgPct; any = true; }
+  });
+  if (!any) return { grade: null, thresholds: null };
+  for (const g of order){
+    if (thresholds[g] !== undefined && pct >= thresholds[g]) return { grade: g, thresholds };
+  }
+  return { grade: "Below lowest recorded threshold", thresholds };
+}
+
+function calculatePaperPriority(pct, targetPct){
+  if (pct === null) return { label: "Not entered", cls: "" };
+  const gap = targetPct - pct;
+  if (gap <= 0) return { label: "Low priority", cls: "low", gap: 0 };
+  if (gap <= 10) return { label: "Medium priority", cls: "medium", gap };
+  return { label: "High priority", cls: "high", gap };
+}
+
+/* =========================================================
+   5. VALIDATION BEFORE ANALYZE
+   ========================================================= */
+function validateInputs(){
+  let ok = true;
+  document.querySelectorAll('input[type=number]').forEach(inp => {
+    const max = Number(inp.getAttribute("max"));
+    if (!validateMarkField(inp, max)) ok = false;
+  });
+  return ok;
+}
+
+/* =========================================================
+   6. STORAGE
+   ========================================================= */
+function collectState(){
+  const state = { selected: Array.from(selectedSubjects), options: chosenOption, marks: {}, notes: {} };
+  selectedSubjects.forEach(code => {
+    const opt = subjects[code].optionGroups[chosenOption[code]];
+    opt.components.forEach((c, i) => {
+      state.marks[`m1-${code}-${i}`] = document.getElementById(`m1-${code}-${i}`)?.value || "";
+      state.marks[`m2-${code}-${i}`] = document.getElementById(`m2-${code}-${i}`)?.value || "";
+      state.notes[`note-${code}-${i}`] = document.getElementById(`note-${code}-${i}`)?.value || "";
+    });
+  });
+  return state;
+}
+
+function saveLocally(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(collectState()));
+    showGlobalMsg("Saved to this browser's local storage.", "ok");
+  }catch(e){ showGlobalMsg("Could not save locally in this browser.", "error"); }
+}
+
+function clearSaved(){
+  localStorage.removeItem(STORAGE_KEY);
+  showGlobalMsg("Saved data cleared.", "ok");
+}
+
+function loadData(){
+  let raw;
+  try{ raw = localStorage.getItem(STORAGE_KEY); }catch(e){ return; }
+  if (!raw) return;
+  let state;
+  try{ state = JSON.parse(raw); }catch(e){ return; }
+  (state.selected || []).forEach(code => { if (subjects[code]) selectedSubjects.add(code); });
+  document.querySelectorAll('#subjectGrid input[type=checkbox]').forEach(cb => {
+    cb.checked = selectedSubjects.has(cb.value);
+  });
+  Object.assign(chosenOption, state.options || {});
+  buildEntryForms();
+  Object.entries(state.marks || {}).forEach(([id, v]) => { const el = document.getElementById(id); if (el) el.value = v; });
+  Object.entries(state.notes || {}).forEach(([id, v]) => { const el = document.getElementById(id); if (el) el.value = v; });
+}
+
+/* =========================================================
+   7. RESET / PRINT / MESSAGES
+   ========================================================= */
+function resetAll(){
+  selectedSubjects.clear();
+  Object.keys(chosenOption).forEach(k => delete chosenOption[k]);
+  document.querySelectorAll('#subjectGrid input[type=checkbox]').forEach(cb => cb.checked = false);
+  buildEntryForms();
+  document.getElementById("reportSection").classList.add("hide");
+  showGlobalMsg("", "");
+}
+
+function printReport(){ window.print(); }
+
+function showGlobalMsg(text, kind){
+  const el = document.getElementById("globalMsg");
+  el.textContent = text;
+  el.className = kind === "error" ? "error" : kind === "ok" ? "ok" : "";
+}
+
+/* =========================================================
+   8. ANALYSIS / RENDERING
+   ========================================================= */
+function analyze(){
+  if (!selectedSubjects.size){
+    showGlobalMsg("Select at least one subject before analyzing.", "error");
+    return;
+  }
+  if (!validateInputs()){
+    showGlobalMsg("Fix the highlighted marks before analyzing (a mark cannot exceed its paper maximum or be negative).", "error");
+    return;
+  }
+  showGlobalMsg("", "");
+
+  const subjectResults = [];
+  selectedSubjects.forEach(code => subjectResults.push(buildSubjectResult(code)));
+
+  renderDashboard(subjectResults);
+  renderSubjectReports(subjectResults);
+
+  document.getElementById("reportSection").classList.remove("hide");
+  const target = document.getElementById("reportSection");
+  window.scrollTo({ top: target.offsetTop - 12, behavior: "smooth" });
+}
+
+function buildSubjectResult(code){
+  const s = subjects[code];
+  const optName = chosenOption[code];
+  const opt = s.optionGroups[optName];
+  const hasThresholdData = !!(opt.officialMax && Object.keys(opt.sessions || {}).length);
+
+  const papers = opt.components.map((comp, i) => {
+    const m1 = readMark(`m1-${code}-${i}`);
+    const m2 = readMark(`m2-${code}-${i}`);
+    const notes = (document.getElementById(`note-${code}-${i}`)?.value || "").trim();
+    return {
+      name: comp.name, max: comp.max,
+      m1, m2,
+      m1Pct: calculateComponentPercentage(m1, comp.max),
+      m2Pct: calculateComponentPercentage(m2, comp.max),
+      notes
+    };
+  });
+
+  function overallFor(mockKey, pctKey){
+    let sumMark = 0, sumMax = 0, any = false;
+    papers.forEach(p => {
+      if (p[mockKey] !== null){ sumMark += p[mockKey]; sumMax += p.max; any = true; }
+    });
+    if (!any) return { entered: false };
+    return { entered: true, mark: sumMark, max: sumMax, pct: (sumMark / sumMax) * 100 };
+  }
+
+  const mock1 = overallFor("m1", "m1Pct");
+  const mock2 = overallFor("m2", "m2Pct");
+
+  let aTargetPct = null, astarTargetPct = null, aAvgInfo = null, astarAvgInfo = null;
+  if (hasThresholdData){
+    aAvgInfo = calculateHistoricalAverage(opt, "A");
+    astarAvgInfo = calculateHistoricalAverage(opt, "Ast");
+    aTargetPct = aAvgInfo ? aAvgInfo.avgPct + PLANNING_BUFFER_PCT : null;
+    astarTargetPct = astarAvgInfo ? astarAvgInfo.avgPct + PLANNING_BUFFER_PCT : null;
+  }
+
+  const mock1Grade = mock1.entered && hasThresholdData ? calculateGrade(mock1.pct, opt) : { grade: null };
+  const mock2Grade = mock2.entered && hasThresholdData ? calculateGrade(mock2.pct, opt) : { grade: null };
+
+  // Priority ranking uses the most recent entered mock (Mock 2 if present, else Mock 1)
+  const referenceTargetPct = aTargetPct !== null ? aTargetPct : 75; // generic fallback only when no verified data
+  const priorities = papers.map(p => {
+    const refPct = p.m2Pct !== null ? p.m2Pct : p.m1Pct;
+    const pr = calculatePaperPriority(refPct, referenceTargetPct);
+    return { ...p, refPct, priority: pr };
+  }).sort((a,b) => {
+    if (a.refPct === null) return 1;
+    if (b.refPct === null) return -1;
+    return a.refPct - b.refPct;
+  });
+
+  return { code, name: s.name, optName, opt, hasThresholdData, papers, mock1, mock2, mock1Grade, mock2Grade,
+           aTargetPct, astarTargetPct, aAvgInfo, astarAvgInfo, priorities };
+}
+
+function gradeClass(grade){
+  if (grade === "Ast") return "g-astar";
+  if (grade === "A") return "g-a";
+  if (["B","C"].includes(grade)) return "g-mid";
+  if (grade === null || grade === undefined) return "g-na";
+  return "g-low";
+}
+
+function renderDashboard(results){
+  let astarCount=0, aCount=0, bCount=0, needsImprovement=0, noData=0;
+  results.forEach(r => {
+    const g = r.mock2.entered ? r.mock2Grade.grade : (r.mock1.entered ? r.mock1Grade.grade : null);
+    if (!r.hasThresholdData || g === null) { noData++; return; }
+    if (g === "Ast") astarCount++;
+    else if (g === "A") aCount++;
+    else if (g === "B") bCount++;
+    else needsImprovement++;
+  });
+  const items = [
+    { n: results.length, l: "Selected subjects" },
+    { n: astarCount, l: "A* range" },
+    { n: aCount, l: "A range" },
+    { n: bCount, l: "B range" },
+    { n: needsImprovement, l: "Needs improvement" },
+    { n: noData, l: "No threshold data / incomplete" }
+  ];
+  document.getElementById("dashboard").innerHTML = items.map(i =>
+    `<div class="dash-item"><span class="n">${i.n}</span><span class="l">${i.l}</span></div>`
+  ).join("");
+}
+
+function fmt(n){ return Number.isFinite(n) ? n.toFixed(1) : "—"; }
+
+function mockBox(label, mock, gradeInfo, hasThresholdData){
+  if (!mock.entered){
+    return `<div class="mock-box"><h4>${label}</h4><p class="muted">Not entered</p></div>`;
+  }
+  const gradeText = hasThresholdData
+    ? (gradeInfo.grade ? (gradeInfo.grade === "Below lowest recorded threshold" ? gradeInfo.grade : "Estimated grade: " + GRADE_LABEL[gradeInfo.grade]) : "No threshold data for this option")
+    : "No verified threshold data for this option";
+  return `<div class="mock-box">
+    <h4>${label}</h4>
+    <span class="big">${fmt(mock.mark)} / ${mock.max}</span>
+    <span>${fmt(mock.pct)}%</span>
+    <div class="bar-track" style="margin-top:8px"><div class="bar-fill ${mock.pct>=70?'ok':mock.pct>=50?'mid':'low'}" style="width:${Math.min(100,mock.pct)}%"></div></div>
+    <p style="margin:8px 0 0;font-size:13px">${gradeText}</p>
+  </div>`;
+}
+
+function renderSubjectReports(results){
+  const container = document.getElementById("subjectReports");
+  container.innerHTML = "";
+
+  results.forEach(r => {
+    const card = document.createElement("div");
+    card.className = "subject-report";
+    card.style.setProperty("--accent", subjectColor[r.code]);
+
+    const latestGrade = r.mock2.entered ? r.mock2Grade.grade : (r.mock1.entered ? r.mock1Grade.grade : null);
+    const chip = latestGrade
+      ? `<span class="grade-chip ${gradeClass(latestGrade)}">${latestGrade === "Below lowest recorded threshold" ? "Below lowest recorded" : GRADE_LABEL[latestGrade]}</span>`
+      : `<span class="grade-chip g-na">Insufficient data</span>`;
+
+    let trendHtml = "";
+    if (r.mock1.entered && r.mock2.entered){
+      const diff = r.mock2.pct - r.mock1.pct;
+      const cls = diff > 0.05 ? "up" : diff < -0.05 ? "down" : "flat";
+      const arrow = diff > 0.05 ? "+" : "";
+      trendHtml = `<p class="trend ${cls}">Trend Mock 1 → Mock 2: ${arrow}${diff.toFixed(1)} percentage points (${arrow}${(r.mock2.mark-r.mock1.mark).toFixed(1)} marks)</p>`;
+    } else {
+      trendHtml = `<p class="muted trend flat">Enter both Mock 1 and Mock 2 to see a trend.</p>`;
+    }
+
+    let targetsHtml = "";
+    if (r.hasThresholdData){
+      const aLine = r.aAvgInfo
+        ? `Historical A threshold estimate: ${r.aAvgInfo.avgPct.toFixed(1)}% (average of ${r.aAvgInfo.count} recorded session${r.aAvgInfo.count>1?'s':''}). Planning target: ${r.aTargetPct.toFixed(1)}%.`
+        : "No recorded A threshold for this option.";
+      const astarLine = r.astarAvgInfo
+        ? `Historical A* threshold estimate: ${r.astarAvgInfo.avgPct.toFixed(1)}% (average of ${r.astarAvgInfo.count} recorded session${r.astarAvgInfo.count>1?'s':''}). Planning target: ${r.astarTargetPct.toFixed(1)}%.`
+        : "No recorded A* threshold for this option.";
+      let statusLine = "";
+      const currentPct = r.mock2.entered ? r.mock2.pct : (r.mock1.entered ? r.mock1.pct : null);
+      if (currentPct !== null && r.astarAvgInfo){
+        if (currentPct >= r.astarAvgInfo.avgPct) statusLine = "Current standing: A* range.";
+        else if (r.aAvgInfo && currentPct < r.aAvgInfo.avgPct) statusLine = "Current standing: Below A range.";
+      }
+      targetsHtml = `
+        <div class="disclaimer">
+          <strong>Historical threshold estimate</strong> — derived from published Cambridge grade thresholds for option "${r.optName}", converted to a percentage of the option's overall maximum (${r.opt.officialMax}). Not an official prediction of the next series.<br>
+          ${aLine}<br>${astarLine}${statusLine ? "<br>" + statusLine : ""}
+          <br><em>Planning target adds a ${PLANNING_BUFFER_PCT}-point buffer above the historical average. This is a planning target, not an official Cambridge requirement.</em>
+        </div>`;
+    } else {
+      targetsHtml = `<div class="disclaimer">No verified historical threshold data is available for ${r.code} — "${r.optName}" yet. Estimate based on available historical threshold data could not be produced; only your raw percentage is shown above.</div>`;
+    }
+
+    // Paper table
+    const paperRows = r.papers.map(p => {
+      const pctShown = p.m2Pct !== null ? p.m2Pct : p.m1Pct;
+      const barClass = pctShown === null ? "" : pctShown >= 70 ? "ok" : pctShown >= 50 ? "mid" : "low";
+      return `<tr>
+        <td>${escapeHtml(p.name)}<div class="paper-max">Max ${p.max}</div></td>
+        <td>${p.m1 === null ? "—" : fmt(p.m1)} ${p.m1Pct !== null ? `(${fmt(p.m1Pct)}%)` : ""}</td>
+        <td>${p.m2 === null ? "—" : fmt(p.m2)} ${p.m2Pct !== null ? `(${fmt(p.m2Pct)}%)` : ""}</td>
+        <td>
+          ${pctShown !== null ? `<div class="bar-track"><div class="bar-fill ${barClass}" style="width:${Math.min(100,pctShown)}%"></div></div><div class="paper-max">${fmt(pctShown)}%</div>` : '<span class="muted">Not entered</span>'}
+        </td>
+      </tr>`;
+    }).join("");
+
+    // Sections to improve
+    const rankable = r.priorities.filter(p => p.refPct !== null);
+    const notEntered = r.priorities.filter(p => p.refPct === null);
+    let improveHtml = "";
+    if (!rankable.length){
+      improveHtml = `<p class="muted">Insufficient marks entered for a complete overall estimate. Enter Mock 1 or Mock 2 marks for at least one paper.</p>`;
+    } else {
+      improveHtml = rankable.map((p, idx) => `
+        <div class="improve-item">
+          <strong>${idx+1}. ${escapeHtml(p.name)}</strong>
+          <span class="priority-tag ${p.priority.cls}" style="margin-left:8px">${p.priority.label}</span>
+          <p style="margin:8px 0 0">Current: ${fmt(p.refPct)}%${r.hasThresholdData ? ` — Target: ${referenceTargetLabel(r)}` : ""}${p.priority.gap ? ` — Gap: ${p.priority.gap.toFixed(1)} percentage points` : " — Gap: none"}</p>
+          ${p.notes ? `<div class="notes"><strong>Weak topics:</strong><br>${escapeHtml(p.notes).replace(/\n/g,'<br>')}</div>` : `<p class="muted" style="margin:8px 0 0">No topic-level weaknesses entered. Paper-level analysis is shown instead.</p>`}
+        </div>`).join("") +
+        (notEntered.length ? `<p class="muted">No marks entered yet for: ${notEntered.map(p=>escapeHtml(p.name)).join(", ")}.</p>` : "");
+    }
+
+    card.innerHTML = `
+      <div class="head">
+        <h3>${r.code} — ${escapeHtml(r.name)} <span class="muted" style="font-weight:400;font-size:13px">(${escapeHtml(r.optName)})</span></h3>
+        ${chip}
+      </div>
+      <div class="body">
+        <div class="mock-compare">
+          ${mockBox("Mock 1", r.mock1, r.mock1Grade, r.hasThresholdData)}
+          ${mockBox("Mock 2", r.mock2, r.mock2Grade, r.hasThresholdData)}
+        </div>
+        ${trendHtml}
+        ${targetsHtml}
+        <table class="paper-table">
+          <caption>Paper-by-paper performance</caption>
+          <thead><tr><th scope="col">Paper</th><th scope="col">Mock 1</th><th scope="col">Mock 2</th><th scope="col">Latest %</th></tr></thead>
+          <tbody>${paperRows}</tbody>
+        </table>
+        <h4>What to improve</h4>
+        ${improveHtml}
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function referenceTargetLabel(r){
+  return r.aTargetPct !== null ? `${r.aTargetPct.toFixed(1)}% (A planning target)` : "75% (generic estimate — no verified threshold on record)";
+}
+
+/* =========================================================
+   9. INIT
+   ========================================================= */
+buildSubjectGrid();
+buildEntryForms();
+loadData();
+</script>
+<noscript><p style="padding:20px">JavaScript is required for this calculator to work.</p></noscript>
+</body>
+</html>
