@@ -6,7 +6,10 @@ A single-page, no-build web app for Cambridge IGCSE students. Select your subjec
 
 ## Features
 
-- Subject selection for 0607, 0610, 0620, 0625, 0417, 0510, 0500 and 3226
+- Subject selection for 0607 (Math), 0610 (Biology), 0620 (Chemistry), 0625 (Physics), 0417 (ICT), 0510 (ESL), 0500 (First Language English), 3226 (Tamil), 0520 (French), 0530 (Spanish), 0549 (Hindi as a Second Language), 0478 (Computer Science), 0455 (Economics), 0450 (Business Studies), 0460 (Geography), 0470 (History), and 2035 (Biblical Studies, Cambridge O Level) — 17 subjects in total
+- A light/dark mode toggle in the top-right corner. It remembers your choice (saved in this browser only) and otherwise follows your device's light/dark setting automatically
+- A live search/filter box above the subject grid so you can jump straight to a subject by name or code once the list gets long
+- For the three co-taught sciences, both the Practical and the Alternative-to-Practical paper combinations are selectable (not just Practical)
 - Paper-combination/option selection where Cambridge uses more than one component combination for a subject
 - Entry for every paper's Mock 1 and Mock 2 marks, plus optional weak-topic notes per paper
 - Mark validation (no negative marks, marks capped at each paper's maximum, blank fields treated as "not entered" rather than zero)
@@ -50,6 +53,10 @@ start index.html      # Windows
 4. Save. GitHub will publish the site at `https://<your-username>.github.io/<your-repo>/`.
 
 No `package.json`, build process, API keys, or backend are needed — it's a static HTML file.
+
+### Search indexing
+
+`robots.txt` and `sitemap.xml` are included so search engines can find and index the page, and `index.html` has SEO meta tags (description, keywords, Open Graph, Twitter card) plus JSON-LD structured data. **Before publishing, open `index.html`, `robots.txt`, and `sitemap.xml` and replace every `https://yourusername.github.io/igcse-analyzer/` placeholder with your actual GitHub Pages URL.**
 
 ## Data and threshold disclaimer
 
