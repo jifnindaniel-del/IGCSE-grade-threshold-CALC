@@ -45,7 +45,21 @@
     --radius:14px;
     /* accent used by header + buttons */
     --accent1:#2f5fb3; --accent2:#7c3fd4; --accent3:#0f9d7c;
+    --track:#e9edf5;
   }
+  :root[data-theme="dark"]{
+    --navy:#e8ecf7; --navy-soft:#a9b4cc; --line:#2b3450; --bg:#0f1424; --card:#171d34;
+    --blue:#7fa8ff; --blue-soft:#1c2747;
+    --green:#5fd3a0; --green-soft:#123326;
+    --amber:#e7b95e; --amber-soft:#3a2c10;
+    --red:#f0899a; --red-soft:#3a1620;
+    --accent1:#7fa8ff; --accent2:#b18cff; --accent3:#4fd0ab;
+    --track:#232a45;
+  }
+  body{transition:background .15s,color .15s}
+  .theme-toggle{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);color:var(--navy);border-radius:999px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;width:auto}
+  .theme-toggle:hover{border-color:var(--accent1);color:var(--accent1)}
+  .top-bar{display:flex;justify-content:flex-end;padding-top:14px}
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{margin:0;background:var(--bg);color:var(--navy);font-family:Arial,Helvetica,sans-serif;line-height:1.5}
@@ -59,13 +73,13 @@
   header.top p{margin:0;color:var(--navy-soft);max-width:70ch}
   header.top p.byline{margin:0 0 8px;font-size:13px;font-weight:700;color:var(--accent1);text-transform:uppercase;letter-spacing:.03em}
   .steps{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 6px}
-  .step-pill{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;font-size:13px;color:var(--navy-soft)}
+  .step-pill{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--navy-soft)}
   .step-pill.active{border-color:var(--blue);color:var(--blue);font-weight:700}
   section.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin:16px 0}
   section.card > h2{margin-top:0;font-size:19px;border-bottom:1px solid var(--line);padding-bottom:12px}
   .muted{color:var(--navy-soft);font-size:14px}
   .subject-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
-  .subject-card{border:1px solid var(--line);border-left:5px solid var(--accent,var(--blue));border-radius:10px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;cursor:pointer;background:#fff;transition:background .12s,border-color .12s}
+  .subject-card{border:1px solid var(--line);border-left:5px solid var(--accent,var(--blue));border-radius:10px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;cursor:pointer;background:var(--card);transition:background .12s,border-color .12s}
   .subject-card:has(input:checked){border-color:var(--accent,var(--blue));border-left-color:var(--accent,var(--blue));background:color-mix(in srgb, var(--accent,var(--blue)) 10%, white)}
   .subject-card input{margin-top:3px;width:16px;height:16px;flex:none;accent-color:var(--accent,var(--blue))}
   .subject-card .code{font-weight:700;display:block;color:var(--accent,var(--navy))}
@@ -74,7 +88,7 @@
   legend{font-weight:700;padding:0 6px;color:var(--accent,var(--navy))}
   label{display:block;font-size:13px;font-weight:700;margin:0 0 5px}
   select,input[type=number],input[type=text],textarea{
-    width:100%;padding:10px;border:1px solid #c9d1e0;border-radius:8px;font-family:inherit;font-size:14px;background:#fff;color:var(--navy)
+    width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:14px;background:var(--card);color:var(--navy)
   }
   select:focus,input:focus,textarea:focus,button:focus{outline:3px solid var(--blue);outline-offset:1px}
   textarea{resize:vertical;min-height:44px}
@@ -89,7 +103,7 @@
   button{border:1px solid transparent;border-radius:9px;padding:11px 18px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
   button.primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff;box-shadow:0 4px 14px rgba(47,95,179,.28)}
   button.primary:hover{filter:brightness(1.06)}
-  button.secondary{background:#fff;color:var(--navy);border-color:var(--line)}
+  button.secondary{background:var(--card);color:var(--navy);border-color:var(--line)}
   button.secondary:hover{border-color:var(--accent1);color:var(--accent1)}
   button.ghost{background:transparent;color:var(--navy-soft);border-color:var(--line)}
   #globalMsg{margin-top:10px;font-weight:700}
@@ -108,7 +122,7 @@
   .grade-chip.g-a{background:var(--green-soft);color:var(--green)}
   .grade-chip.g-mid{background:var(--amber-soft);color:var(--amber)}
   .grade-chip.g-low{background:var(--red-soft);color:var(--red)}
-  .grade-chip.g-na{background:#eef0f5;color:var(--navy-soft)}
+  .grade-chip.g-na{background:var(--bg);color:var(--navy-soft)}
   .subject-report .body{padding:18px 20px}
   .mock-compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
   @media(max-width:560px){.mock-compare{grid-template-columns:1fr}}
@@ -120,7 +134,7 @@
   table.paper-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
   table.paper-table caption{text-align:left;font-weight:700;margin-bottom:6px}
   table.paper-table th,table.paper-table td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
-  .bar-track{background:#e9edf5;border-radius:999px;height:9px;overflow:hidden;min-width:90px}
+  .bar-track{background:var(--track);border-radius:999px;height:9px;overflow:hidden;min-width:90px}
   .bar-fill{height:100%;border-radius:999px}
   .bar-fill.ok{background:var(--green)} .bar-fill.mid{background:var(--amber)} .bar-fill.low{background:var(--red)}
   .priority-tag{font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px}
@@ -152,6 +166,13 @@
 <body>
 <div class="wrap">
 
+  <div class="top-bar no-print">
+    <button type="button" class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Switch between light and dark mode">
+      <span id="themeToggleIcon" aria-hidden="true">&#9789;</span>
+      <span id="themeToggleLabel">Dark mode</span>
+    </button>
+  </div>
+
   <header class="top">
     <h1>IGCSE Threshold &amp; Paper Analyzer</h1>
     <p class="byline">by Jifni N Daniel</p>
@@ -168,10 +189,16 @@
 
   <section class="card" id="subjectSection">
     <h2>1. Select your subjects</h2>
-    <p class="muted">Choose every subject you want included in this report.</p>
-    <div style="max-width:360px;margin-bottom:14px">
-      <label for="subjectSearch">Search subjects</label>
-      <input type="text" id="subjectSearch" placeholder="Type a subject name or code, e.g. Physics or 0625" autocomplete="off">
+    <p class="muted">Choose every subject you want included in this report. 17 subjects have full paper-by-paper threshold data; the rest are available in a simpler "enter your own maximum mark" mode.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:14px;margin-bottom:14px">
+      <div style="max-width:360px;flex:1;min-width:220px">
+        <label for="subjectSearch">Search subjects</label>
+        <input type="text" id="subjectSearch" placeholder="Type a subject name or code, e.g. Physics or 0625" autocomplete="off">
+      </div>
+      <div style="max-width:280px;flex:1;min-width:180px">
+        <label for="groupFilter">Subject group</label>
+        <select id="groupFilter"><option value="">All groups</option></select>
+      </div>
     </div>
     <p id="subjectSearchStatus" class="muted" role="status" aria-live="polite" style="margin:0 0 10px"></p>
     <div class="subject-grid" id="subjectGrid"></div>
@@ -190,7 +217,11 @@
       <button class="secondary" onclick="printReport()">Print report</button>
       <button class="ghost" onclick="saveLocally()">Save locally</button>
       <button class="ghost" onclick="clearSaved()">Clear saved data</button>
+      <button class="ghost" onclick="downloadSaveFile()">Download my subjects</button>
+      <button class="ghost" onclick="document.getElementById('uploadSaveFile').click()">Upload saved file</button>
+      <input type="file" id="uploadSaveFile" accept="application/json,.json" style="display:none" onchange="handleUploadSaveFile(event)">
     </div>
+    <p class="muted" style="margin:8px 0 0">"Download my subjects" saves a small file with your selected subjects, papers, and marks. Upload that file later (even on a different device) to have everything auto-select and refill itself.</p>
     <p id="globalMsg" role="status"></p>
   </section>
 
@@ -613,8 +644,157 @@ const subjects = {
         sessions: { "June 2025": {Ast:173,A:150,B:127,C:105,D:88,E:72,F:55,G:38} }
       }
     }
+  },
+  "0470": {
+    name: "History",
+    hasAstar: true,
+    optionGroups: {
+      "Papers 03, 11, 21 (AX, Coursework Alternative)": {
+        officialMax: 150, approxMax: true,
+        components: [{name:"Component 03 (Coursework Alternative)", max:40},{name:"Paper 11 (Depth Study)", max:60},{name:"Paper 21 (Source-based)", max:40}],
+        weightNote: "Cambridge applies a weighting factor to reach the 150-mark overall maximum from raw maximums that sum to 140.",
+        sessions: { "June 2025": {Ast:105,A:93,B:81,C:70,D:62,E:54,F:46,G:38} }
+      },
+      "Papers 03, 12, 22 (AY, Coursework Alternative)": {
+        officialMax: 150, approxMax: true,
+        components: [{name:"Component 03 (Coursework Alternative)", max:40},{name:"Paper 12 (Depth Study)", max:60},{name:"Paper 22 (Source-based)", max:40}],
+        weightNote: "Cambridge applies a weighting factor to reach the 150-mark overall maximum from raw maximums that sum to 140.",
+        sessions: { "June 2025": {Ast:106,A:94,B:82,C:70,D:62,E:55,F:48,G:41} }
+      },
+      "Papers 03, 13, 23 (AZ, Coursework Alternative)": {
+        officialMax: 150, approxMax: true,
+        components: [{name:"Component 03 (Coursework Alternative)", max:40},{name:"Paper 13 (Depth Study)", max:60},{name:"Paper 23 (Source-based)", max:40}],
+        weightNote: "Cambridge applies a weighting factor to reach the 150-mark overall maximum from raw maximums that sum to 140.",
+        sessions: { "June 2025": {Ast:110,A:97,B:84,C:71,D:62,E:54,F:46,G:38} }
+      },
+      "Papers 11, 21, 41 (BX, Coursework route)": {
+        officialMax: 150, approxMax: true,
+        components: [{name:"Paper 11 (Depth Study)", max:60},{name:"Paper 21 (Source-based)", max:40},{name:"Component 41 (Coursework)", max:40}],
+        weightNote: "Cambridge applies a weighting factor to reach the 150-mark overall maximum from raw maximums that sum to 140.",
+        sessions: { "June 2025": {Ast:91,A:77,B:63,C:50,D:44,E:39,F:32,G:25} }
+      },
+      "Papers 12, 22, 42 (BY, Coursework route)": {
+        officialMax: 150, approxMax: true,
+        components: [{name:"Paper 12 (Depth Study)", max:60},{name:"Paper 22 (Source-based)", max:40},{name:"Component 42 (Coursework)", max:40}],
+        weightNote: "Cambridge applies a weighting factor to reach the 150-mark overall maximum from raw maximums that sum to 140.",
+        sessions: { "June 2025": {Ast:94,A:79,B:64,C:50,D:45,E:40,F:34,G:28} }
+      },
+      "Papers 13, 23, 43 (BZ, Coursework route)": {
+        officialMax: 150, approxMax: true,
+        components: [{name:"Paper 13 (Depth Study)", max:60},{name:"Paper 23 (Source-based)", max:40},{name:"Component 43 (Coursework)", max:40}],
+        weightNote: "Cambridge applies a weighting factor to reach the 150-mark overall maximum from raw maximums that sum to 140.",
+        sessions: { "June 2025": {Ast:97,A:82,B:67,C:52,D:45,E:39,F:32,G:25} }
+      }
+    }
+  },
+  "2035": {
+    name: "Biblical Studies (Cambridge O Level)",
+    hasAstar: false,
+    optionGroups: {
+      "Papers 12, 22": {
+        officialMax: 120,
+        components: [{name:"Paper 12", max:60},{name:"Paper 22", max:60}],
+        sessions: { "June 2024": {A:102,B:89,C:76,D:63,E:54} }
+      }
+    }
   }
 };
+
+// Subject-group tags for the 17 subjects above, used by the group filter.
+const DETAILED_SUBJECT_GROUPS = {
+  "0607":"Mathematics", "0610":"Sciences", "0620":"Sciences", "0625":"Sciences",
+  "0417":"ICT & Computer Science", "0478":"ICT & Computer Science",
+  "0510":"Languages (Foreign/Second Language)", "0500":"English & Literature",
+  "0520":"Languages (Foreign/Second Language)", "0530":"Languages (Foreign/Second Language)",
+  "0549":"Languages (Foreign/Second Language)",
+  "0455":"Business, Economics & Accounting", "0450":"Business, Economics & Accounting",
+  "0460":"Humanities & Social Sciences", "0470":"Humanities & Social Sciences",
+  "3226":"Languages (First Language)", "2035":"Religious & Values Education"
+};
+Object.entries(DETAILED_SUBJECT_GROUPS).forEach(([code, g]) => { if (subjects[code]) subjects[code].group = g; });
+
+// Subjects from the full Cambridge IGCSE catalogue that don't yet have detailed
+// per-paper threshold data in this tool. Selectable, with a "custom entry" mode:
+// the student sets their own maximum mark and gets a raw-percentage estimate
+// (no historical threshold comparison, since none is verified for these yet).
+// [code, name, group]
+const BASIC_SUBJECTS_RAW = [
+  ["0580","Mathematics","Mathematics"],
+  ["0606","Mathematics - Additional","Mathematics"],
+  ["0444","Mathematics (US)","Mathematics"],
+  ["0600","Agriculture","Sciences"],
+  ["0697","Marine Science","Sciences"],
+  ["0652","Physical Science","Sciences"],
+  ["0653","Science - Combined","Sciences"],
+  ["0654","Sciences - Co-ordinated (Double)","Sciences"],
+  ["0680","Environmental Management","Sciences"],
+  ["0452","Accounting","Business, Economics & Accounting"],
+  ["0264","Business","Business, Economics & Accounting"],
+  ["0715","Commerce","Business, Economics & Accounting"],
+  ["0454","Enterprise","Business, Economics & Accounting"],
+  ["0479","Statistics","Business, Economics & Accounting"],
+  ["0265","Computer Science (alternative syllabus)","ICT & Computer Science"],
+  ["0448","Pakistan Studies","Humanities & Social Sciences"],
+  ["0495","Sociology","Humanities & Social Sciences"],
+  ["0457","Global Perspectives","Humanities & Social Sciences"],
+  ["0409","History - American (US)","Humanities & Social Sciences"],
+  ["0266","Psychology","Humanities & Social Sciences"],
+  ["0493","Islamiyat","Religious & Values Education"],
+  ["0490","Religious Studies","Religious & Values Education"],
+  ["0400","Art & Design","Creative & Performing Arts"],
+  ["0410","Music","Creative & Performing Arts"],
+  ["0411","Drama","Creative & Performing Arts"],
+  ["0413","Physical Education","Creative & Performing Arts"],
+  ["0445","Design & Technology","Creative & Performing Arts"],
+  ["0648","Food & Nutrition","Creative & Performing Arts"],
+  ["0408","World Literature","English & Literature"],
+  ["0524","English - First Language (US)","English & Literature"],
+  ["0475","English - Literature in English","English & Literature"],
+  ["0472","English (as an Additional Language)","English & Literature"],
+  ["0511","English as a Second Language (Count-in Speaking)","English & Literature"],
+  ["0508","Arabic - First Language","Languages (First Language)"],
+  ["0696","Malay - First Language","Languages (First Language)"],
+  ["0538","Bahasa Indonesia","Languages (First Language)"],
+  ["0509","Chinese - First Language","Languages (First Language)"],
+  ["0504","Portuguese - First Language","Languages (First Language)"],
+  ["0698","Setswana - First Language","Languages (First Language)"],
+  ["0502","Spanish - First Language","Languages (First Language)"],
+  ["0474","Spanish - Literature in Spanish","Languages (First Language)"],
+  ["0501","French - First Language","Languages (First Language)"],
+  ["0695","Vietnamese - First Language","Languages (First Language)"],
+  ["0505","German - First Language","Languages (First Language)"],
+  ["0499","Sanskrit","Languages (First Language)"],
+  ["0480","Latin","Languages (First Language)"],
+  ["0548","Afrikaans - Second Language","Languages (Foreign/Second Language)"],
+  ["0544","Arabic - Foreign Language","Languages (Foreign/Second Language)"],
+  ["0546","Malay - Foreign Language","Languages (Foreign/Second Language)"],
+  ["0523","Chinese - Second Language","Languages (Foreign/Second Language)"],
+  ["0547","Chinese (Mandarin) - Foreign Language","Languages (Foreign/Second Language)"],
+  ["0525","German - Foreign Language","Languages (Foreign/Second Language)"],
+  ["0531","IsiZulu as a Second Language","Languages (Foreign/Second Language)"],
+  ["0535","Italian - Foreign Language","Languages (Foreign/Second Language)"],
+  ["0716","Japanese - Foreign Language","Languages (Foreign/Second Language)"],
+  ["0262","Swahili","Languages (Foreign/Second Language)"]
+];
+
+BASIC_SUBJECTS_RAW.forEach(([code, name, group]) => {
+  if (subjects[code]) return; // don't overwrite a subject that already has detailed data
+  subjects[code] = {
+    name, group, hasAstar: false, basic: true,
+    optionGroups: {
+      "Custom entry": {
+        officialMax: null,
+        custom: true,
+        components: [{ name: "Overall marks", max: 100, custom: true }],
+        sessions: {}
+      }
+    }
+  };
+});
+
+const SUBJECT_GROUPS = ["Mathematics","Sciences","English & Literature","Languages (First Language)",
+  "Languages (Foreign/Second Language)","Humanities & Social Sciences","Business, Economics & Accounting",
+  "ICT & Computer Science","Creative & Performing Arts","Religious & Values Education"];
 
 const GRADE_ORDER = ["Ast","A","B","C","D","E","F","G"];
 const GRADE_LABEL = {Ast:"A*",A:"A",B:"B",C:"C",D:"D",E:"E",F:"F",G:"G"};
@@ -640,12 +820,13 @@ function buildSubjectGrid(){
     label.className = "subject-card";
     label.dataset.code = code.toLowerCase();
     label.dataset.name = s.name.toLowerCase();
+    label.dataset.group = s.group || "";
     label.style.setProperty("--accent", subjectColor[code]);
     label.innerHTML = `
       <input type="checkbox" value="${code}" aria-describedby="sub-${code}-name">
       <span>
-        <span class="code">${code}</span>
-        <span class="sname" id="sub-${code}-name">${s.name}</span>
+        <span class="code">${code}${s.basic ? ' <span class="muted" style="font-weight:400;font-size:11px">(basic entry)</span>' : ""}</span>
+        <span class="sname" id="sub-${code}-name">${escapeHtml(s.name)}</span>
       </span>`;
     label.querySelector("input").addEventListener("change", (e) => {
       if (e.target.checked) selectedSubjects.add(code); else selectedSubjects.delete(code);
@@ -655,21 +836,39 @@ function buildSubjectGrid(){
   });
 }
 
+function populateGroupFilter(){
+  const sel = document.getElementById("groupFilter");
+  SUBJECT_GROUPS.forEach(g => {
+    const opt = document.createElement("option");
+    opt.value = g; opt.textContent = g;
+    sel.appendChild(opt);
+  });
+  sel.addEventListener("change", applySubjectFilters);
+}
+
+function applySubjectFilters(){
+  filterSubjects(document.getElementById("subjectSearch").value);
+}
+
 function filterSubjects(term){
   const q = term.trim().toLowerCase();
+  const group = document.getElementById("groupFilter").value;
   const cards = document.querySelectorAll("#subjectGrid .subject-card");
   let visibleCount = 0;
   cards.forEach(card => {
-    const match = !q || card.dataset.code.includes(q) || card.dataset.name.includes(q);
+    const matchesText = !q || card.dataset.code.includes(q) || card.dataset.name.includes(q);
+    const matchesGroup = !group || card.dataset.group === group;
+    const match = matchesText && matchesGroup;
     card.classList.toggle("hide", !match);
     if (match) visibleCount++;
   });
   const status = document.getElementById("subjectSearchStatus");
-  if (!q){ status.textContent = ""; }
-  else { status.textContent = `${visibleCount} of ${cards.length} subject${cards.length===1?"":"s"} match "${term.trim()}".`; }
+  if (!q && !group){ status.textContent = ""; }
+  else { status.textContent = `${visibleCount} of ${cards.length} subjects match your filters.`; }
 }
 
 document.getElementById("subjectSearch").addEventListener("input", (e) => filterSubjects(e.target.value));
+populateGroupFilter();
 
 /* =========================================================
    3. PAPER ENTRY FORMS
@@ -720,15 +919,28 @@ function buildPaperRows(code){
     note.textContent = "Component maximum marks below are approximate — check your own paper/timetable if you need the exact figure.";
     box.appendChild(note);
   }
+  if (opt.custom){
+    const note = document.createElement("p");
+    note.className = "muted";
+    note.textContent = "Detailed paper-by-paper threshold data isn't in this tool yet for this subject. Enter your own maximum mark and you'll still get a raw-percentage estimate — just without a historical threshold comparison.";
+    box.appendChild(note);
+  }
   opt.components.forEach((comp, i) => {
     const row = document.createElement("div");
     row.className = "paper-row";
-    const m1id = `m1-${code}-${i}`, m2id = `m2-${code}-${i}`, noteId = `note-${code}-${i}`;
+    const m1id = `m1-${code}-${i}`, m2id = `m2-${code}-${i}`, noteId = `note-${code}-${i}`, maxId = `max-${code}-${i}`;
+    const maxFieldHtml = comp.custom
+      ? `<div class="paper-name-cell">
+           <span class="paper-name">${comp.name}</span>
+           <label for="${maxId}" style="margin-top:6px">Maximum marks for this paper/subject</label>
+           <input type="number" id="${maxId}" min="1" step="0.5" value="${comp.max}" style="max-width:140px">
+         </div>`
+      : `<div class="paper-name-cell">
+           <span class="paper-name">${comp.name}</span>
+           <span class="paper-max">Maximum: ${comp.max} marks</span>
+         </div>`;
     row.innerHTML = `
-      <div class="paper-name-cell">
-        <span class="paper-name">${comp.name}</span>
-        <span class="paper-max">Maximum: ${comp.max} marks</span>
-      </div>
+      ${maxFieldHtml}
       <div>
         <label for="${m1id}">Mock 1</label>
         <input type="number" id="${m1id}" min="0" max="${comp.max}" step="0.5" placeholder="Not entered">
@@ -745,9 +957,20 @@ function buildPaperRows(code){
       </div>
     `;
     box.appendChild(row);
+    const currentMax = () => comp.custom ? (Number(document.getElementById(maxId).value) || comp.max) : comp.max;
     [m1id, m2id].forEach(id => {
-      document.getElementById(id).addEventListener("input", (e) => validateMarkField(e.target, comp.max));
+      document.getElementById(id).addEventListener("input", (e) => validateMarkField(e.target, currentMax()));
     });
+    if (comp.custom){
+      document.getElementById(maxId).addEventListener("input", () => {
+        const m = currentMax();
+        [m1id, m2id].forEach(id => {
+          const el = document.getElementById(id);
+          el.setAttribute("max", m);
+          validateMarkField(el, m);
+        });
+      });
+    }
   });
 }
 
@@ -931,11 +1154,12 @@ function buildSubjectResult(code){
     const m1 = readMark(`m1-${code}-${i}`);
     const m2 = readMark(`m2-${code}-${i}`);
     const notes = (document.getElementById(`note-${code}-${i}`)?.value || "").trim();
+    const max = comp.custom ? (Number(document.getElementById(`max-${code}-${i}`)?.value) || comp.max) : comp.max;
     return {
-      name: comp.name, max: comp.max,
+      name: comp.name, max,
       m1, m2,
-      m1Pct: calculateComponentPercentage(m1, comp.max),
-      m2Pct: calculateComponentPercentage(m2, comp.max),
+      m1Pct: calculateComponentPercentage(m1, max),
+      m2Pct: calculateComponentPercentage(m2, max),
       notes
     };
   });
@@ -1138,8 +1362,45 @@ function referenceTargetLabel(r){
 }
 
 /* =========================================================
+   10. THEME (light / dark mode)
+   ========================================================= */
+const THEME_KEY = "igcseAnalyzerTheme.v1";
+
+function applyTheme(theme){
+  document.documentElement.setAttribute("data-theme", theme);
+  const icon = document.getElementById("themeToggleIcon");
+  const label = document.getElementById("themeToggleLabel");
+  if (theme === "dark"){
+    icon.textContent = "\u2600"; // sun, to indicate switching back to light
+    label.textContent = "Light mode";
+  } else {
+    icon.textContent = "\u263D"; // moon, to indicate switching to dark
+    label.textContent = "Dark mode";
+  }
+}
+
+function toggleTheme(){
+  const current = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+  const next = current === "dark" ? "light" : "dark";
+  applyTheme(next);
+  try { localStorage.setItem(THEME_KEY, next); } catch(e) { /* storage unavailable, theme just won't persist */ }
+}
+
+function initTheme(){
+  let saved = null;
+  try { saved = localStorage.getItem(THEME_KEY); } catch(e) { /* ignore */ }
+  if (saved === "dark" || saved === "light"){
+    applyTheme(saved);
+  } else {
+    const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    applyTheme(prefersDark ? "dark" : "light");
+  }
+}
+
+/* =========================================================
    9. INIT
    ========================================================= */
+initTheme();
 buildSubjectGrid();
 buildEntryForms();
 loadData();
