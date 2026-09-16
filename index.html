@@ -777,24 +777,11 @@ const BASIC_SUBJECTS_RAW = [
   ["0262","Swahili","Languages (Foreign/Second Language)"]
 ];
 
-BASIC_SUBJECTS_RAW.forEach(([code, name, group]) => {
-  if (subjects[code]) return; // don't overwrite a subject that already has detailed data
-  subjects[code] = {
-    name, group, hasAstar: false, basic: true,
-    optionGroups: {
-      "Custom entry": {
-        officialMax: null,
-        custom: true,
-        components: [{ name: "Overall marks", max: 100, custom: true }],
-        sessions: {}
-      }
-    }
-  };
-});
+// Note: BASIC_SUBJECTS_RAW above lists more Cambridge subjects that could be added later,
+// but they aren't injected into `subjects` here — only subjects with verified, sourced
+// paper-by-paper threshold data are shown in the app.
 
-const SUBJECT_GROUPS = ["Mathematics","Sciences","English & Literature","Languages (First Language)",
-  "Languages (Foreign/Second Language)","Humanities & Social Sciences","Business, Economics & Accounting",
-  "ICT & Computer Science","Creative & Performing Arts","Religious & Values Education"];
+const SUBJECT_GROUPS = Array.from(new Set(Object.values(subjects).map(s => s.group).filter(Boolean))).sort();
 
 const GRADE_ORDER = ["Ast","A","B","C","D","E","F","G"];
 const GRADE_LABEL = {Ast:"A*",A:"A",B:"B",C:"C",D:"D",E:"E",F:"F",G:"G"};
@@ -1056,19 +1043,45 @@ function validateInputs(){
 }
 
 /* =========================================================
-   6. STORAGE
+   6. STORAGE (localStorage + downloadable/uploadable save file)
    ========================================================= */
 function collectState(){
-  const state = { selected: Array.from(selectedSubjects), options: chosenOption, marks: {}, notes: {} };
+  const state = { selected: Array.from(selectedSubjects), options: chosenOption, marks: {}, notes: {}, maxes: {}, theme: document.documentElement.getAttribute("data-theme") || "light" };
   selectedSubjects.forEach(code => {
     const opt = subjects[code].optionGroups[chosenOption[code]];
     opt.components.forEach((c, i) => {
       state.marks[`m1-${code}-${i}`] = document.getElementById(`m1-${code}-${i}`)?.value || "";
       state.marks[`m2-${code}-${i}`] = document.getElementById(`m2-${code}-${i}`)?.value || "";
       state.notes[`note-${code}-${i}`] = document.getElementById(`note-${code}-${i}`)?.value || "";
+      if (c.custom){
+        state.maxes[`max-${code}-${i}`] = document.getElementById(`max-${code}-${i}`)?.value || "";
+      }
     });
   });
   return state;
+}
+
+function applyState(state){
+  if (!state) return;
+  selectedSubjects.clear();
+  (state.selected || []).forEach(code => { if (subjects[code]) selectedSubjects.add(code); });
+  document.querySelectorAll('#subjectGrid input[type=checkbox]').forEach(cb => {
+    cb.checked = selectedSubjects.has(cb.value);
+  });
+  Object.keys(chosenOption).forEach(k => delete chosenOption[k]);
+  Object.assign(chosenOption, state.options || {});
+  buildEntryForms();
+  Object.entries(state.maxes || {}).forEach(([id, v]) => { const el = document.getElementById(id); if (el && v !== "") el.value = v; });
+  Object.entries(state.marks || {}).forEach(([id, v]) => { const el = document.getElementById(id); if (el) el.value = v; });
+  Object.entries(state.notes || {}).forEach(([id, v]) => { const el = document.getElementById(id); if (el) el.value = v; });
+  // Re-sync Mock inputs' max attribute to any restored custom maximums.
+  Object.keys(state.maxes || {}).forEach(maxId => {
+    const maxEl = document.getElementById(maxId);
+    if (!maxEl) return;
+    const base = maxId.replace(/^max-/, "");
+    ["m1-" + base, "m2-" + base].forEach(id => { const el = document.getElementById(id); if (el) el.setAttribute("max", maxEl.value); });
+  });
+  if (state.theme === "dark" || state.theme === "light") applyTheme(state.theme);
 }
 
 function saveLocally(){
@@ -1089,14 +1102,44 @@ function loadData(){
   if (!raw) return;
   let state;
   try{ state = JSON.parse(raw); }catch(e){ return; }
-  (state.selected || []).forEach(code => { if (subjects[code]) selectedSubjects.add(code); });
-  document.querySelectorAll('#subjectGrid input[type=checkbox]').forEach(cb => {
-    cb.checked = selectedSubjects.has(cb.value);
-  });
-  Object.assign(chosenOption, state.options || {});
-  buildEntryForms();
-  Object.entries(state.marks || {}).forEach(([id, v]) => { const el = document.getElementById(id); if (el) el.value = v; });
-  Object.entries(state.notes || {}).forEach(([id, v]) => { const el = document.getElementById(id); if (el) el.value = v; });
+  applyState(state);
+}
+
+function downloadSaveFile(){
+  if (!selectedSubjects.size){
+    showGlobalMsg("Select at least one subject and enter some marks before downloading.", "error");
+    return;
+  }
+  const state = collectState();
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const stamp = new Date().toISOString().slice(0,10);
+  a.href = url;
+  a.download = `igcse-analyzer-save-${stamp}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  showGlobalMsg("Save file downloaded. Upload it later to restore your subjects and marks.", "ok");
+}
+
+function handleUploadSaveFile(event){
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    let state;
+    try{ state = JSON.parse(reader.result); }catch(e){
+      showGlobalMsg("That file isn't a valid save file for this tool.", "error");
+      return;
+    }
+    applyState(state);
+    showGlobalMsg("Save file loaded — your subjects and marks have been restored.", "ok");
+  };
+  reader.onerror = () => showGlobalMsg("Could not read that file.", "error");
+  reader.readAsText(file);
+  event.target.value = ""; // allow re-uploading the same filename later
 }
 
 /* =========================================================
