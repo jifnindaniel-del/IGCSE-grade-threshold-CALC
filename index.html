@@ -72,9 +72,21 @@
     -webkit-background-clip:text;background-clip:text;color:transparent}
   header.top p{margin:0;color:var(--navy-soft);max-width:70ch}
   header.top p.byline{margin:0 0 8px;font-size:13px;font-weight:700;color:var(--accent1);text-transform:uppercase;letter-spacing:.03em}
-  .steps{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 6px}
-  .step-pill{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--navy-soft)}
-  .step-pill.active{border-color:var(--blue);color:var(--blue);font-weight:700}
+  .hero-stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+  .hero-stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 16px;min-width:120px}
+  .hero-stat .n{font-size:20px;font-weight:800;display:block;background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero-stat .l{font-size:12px;color:var(--navy-soft)}
+  .steps{display:flex;align-items:center;gap:0;margin:22px 0 6px;max-width:640px}
+  .step-pill{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;border:none;background:transparent;padding:10px 6px;font-size:13px;font-weight:700;color:var(--navy-soft);cursor:pointer;position:relative;font-family:inherit}
+  .step-pill::after{content:"";position:absolute;top:15px;left:50%;width:100%;height:2px;background:var(--line);z-index:0}
+  .step-pill:last-child::after{display:none}
+  .step-pill .step-num{position:relative;z-index:1;display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--card);border:2px solid var(--line);color:var(--navy-soft);font-size:12px;flex:none}
+  .step-pill.active{color:var(--accent1)}
+  .step-pill.active .step-num{border-color:var(--accent1);background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff}
+  .step-pill.done .step-num{border-color:var(--green);background:var(--green);color:#fff}
+  .step-pill.done{color:var(--green)}
+  .step-pill span:not(.step-num){display:none}
+  @media(min-width:560px){.step-pill span:not(.step-num){display:inline}}
   section.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin:16px 0}
   section.card > h2{margin-top:0;font-size:19px;border-bottom:1px solid var(--line);padding-bottom:12px}
   .muted{color:var(--navy-soft);font-size:14px}
@@ -86,6 +98,15 @@
   .subject-card .sname{font-size:13px;color:var(--navy-soft)}
   fieldset{border:1px solid var(--line);border-top:4px solid var(--accent,var(--blue));border-radius:10px;padding:14px;margin:0 0 16px}
   legend{font-weight:700;padding:0 6px;color:var(--accent,var(--navy))}
+  details.subject-entry{border:1px solid var(--line);border-top:4px solid var(--accent,var(--blue));border-radius:10px;margin:0 0 12px;background:var(--card);overflow:hidden}
+  details.subject-entry > summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;color:var(--accent,var(--navy));display:flex;align-items:center;justify-content:space-between;gap:10px}
+  details.subject-entry > summary::-webkit-details-marker{display:none}
+  details.subject-entry > summary::before{content:"▸";display:inline-block;margin-right:8px;transition:transform .12s;color:var(--accent,var(--blue))}
+  details.subject-entry[open] > summary::before{transform:rotate(90deg)}
+  details.subject-entry > summary .summary-hint{font-size:12px;font-weight:400;white-space:nowrap}
+  .subject-entry-body{padding:0 16px 16px}
+  .accordion-controls{display:flex;gap:8px;margin:0 0 12px}
+  .accordion-controls button{width:auto}
   label{display:block;font-size:13px;font-weight:700;margin:0 0 5px}
   select,input[type=number],input[type=text],textarea{
     width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:14px;background:var(--card);color:var(--navy)
@@ -106,17 +127,25 @@
   button.secondary{background:var(--card);color:var(--navy);border-color:var(--line)}
   button.secondary:hover{border-color:var(--accent1);color:var(--accent1)}
   button.ghost{background:transparent;color:var(--navy-soft);border-color:var(--line)}
-  #globalMsg{margin-top:10px;font-weight:700}
-  #globalMsg.error{color:var(--red)}
-  #globalMsg.ok{color:var(--green)}
+  #globalMsg,.step-msg{margin-top:10px;font-weight:700;min-height:1.3em}
+  #globalMsg.error,.step-msg.error{color:var(--red)}
+  #globalMsg.ok,.step-msg.ok{color:var(--green)}
+  .wizard-nav{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+  .next-btn{width:auto;padding:13px 26px}
+  .step-pill.next-btn:disabled,button:disabled{opacity:.5;cursor:not-allowed}
+  @keyframes stepIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  .wizard-step:not(.hide){animation:stepIn .28s ease}
   .hide{display:none !important}
   .dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
   .dash-item{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px}
   .dash-item .n{font-size:26px;font-weight:800;display:block}
   .dash-item .l{font-size:12px;color:var(--navy-soft)}
   .subject-report{border:1px solid var(--line);border-left:6px solid var(--accent,var(--blue));border-radius:var(--radius);margin:16px 0;overflow:hidden}
-  .subject-report > .head{background:color-mix(in srgb, var(--accent,var(--blue)) 7%, var(--bg));padding:16px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;align-items:center}
+  .subject-report > .head{cursor:pointer;list-style:none;background:color-mix(in srgb, var(--accent,var(--blue)) 7%, var(--bg));padding:16px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;align-items:center}
+  .subject-report > .head::-webkit-details-marker{display:none}
   .subject-report > .head h3{margin:0;font-size:17px;color:var(--accent,var(--navy))}
+  .subject-report > .head h3::before{content:"▸";display:inline-block;margin-right:8px;transition:transform .12s;color:var(--accent,var(--blue))}
+  .subject-report[open] > .head h3::before{transform:rotate(90deg)}
   .grade-chip{display:inline-block;padding:4px 12px;border-radius:999px;font-weight:800;font-size:13px;border:1px solid transparent}
   .grade-chip.g-astar{background:var(--green-soft);color:var(--green);border-color:var(--green)}
   .grade-chip.g-a{background:var(--green-soft);color:var(--green)}
@@ -176,20 +205,19 @@
   <header class="top">
     <h1>IGCSE Threshold &amp; Paper Analyzer</h1>
     <p class="byline">by Jifni N Daniel</p>
-    <p>Select your subjects, enter marks for every paper you sit, and get a component-by-component plan for what to improve before the next mock or the real exam.</p>
+    <p>Select your subjects, enter marks for every paper you sit, and get a component-by-component plan for what to improve before the next mock or the real exam. Every threshold is sourced from a published Cambridge grade-threshold table, never a guessed percentage.</p>
+    <div class="hero-stats" id="heroStats"></div>
   </header>
 
-  <nav class="steps no-print" aria-label="Workflow steps">
-    <span class="step-pill active">1. Select subjects</span>
-    <span class="step-pill">2. Choose your paper combination</span>
-    <span class="step-pill">3. Enter Mock 1 &amp; Mock 2 marks</span>
-    <span class="step-pill">4. Add weak-topic notes</span>
-    <span class="step-pill">5. Analyze results</span>
+  <nav class="steps no-print" aria-label="Workflow steps" id="stepNav">
+    <button type="button" class="step-pill active" data-step="1" onclick="goToStep(1)"><span class="step-num">1</span><span>Select subjects</span></button>
+    <button type="button" class="step-pill" data-step="2" onclick="goToStep(2)"><span class="step-num">2</span><span>Enter marks</span></button>
+    <button type="button" class="step-pill" data-step="3" onclick="goToStep(3)"><span class="step-num">3</span><span>Results</span></button>
   </nav>
 
-  <section class="card" id="subjectSection">
+  <section class="card wizard-step" id="subjectSection" data-step="1">
     <h2>1. Select your subjects</h2>
-    <p class="muted">Choose every subject you want included in this report. 17 subjects have full paper-by-paper threshold data; the rest are available in a simpler "enter your own maximum mark" mode.</p>
+    <p class="muted">Choose every subject you want included in this report, in any order — they're listed alphabetically below. 19 subjects have full paper-by-paper threshold data; the rest are available in a simpler "enter your own maximum mark" mode.</p>
     <div style="display:flex;flex-wrap:wrap;gap:14px;margin-bottom:14px">
       <div style="max-width:360px;flex:1;min-width:220px">
         <label for="subjectSearch">Search subjects</label>
@@ -202,34 +230,46 @@
     </div>
     <p id="subjectSearchStatus" class="muted" role="status" aria-live="polite" style="margin:0 0 10px"></p>
     <div class="subject-grid" id="subjectGrid"></div>
-  </section>
-
-  <section class="card" id="entrySection">
-    <h2>2 &amp; 3. Paper combination and marks</h2>
-    <p class="muted">For each subject, choose the paper/component combination you actually sit, then enter Mock 1 and Mock 2 marks for every paper. Leave a box blank if you have not sat that mock yet — a blank is treated as "not entered", never as zero.</p>
-    <div id="entryContainer"><p class="muted">Select at least one subject above to begin.</p></div>
-  </section>
-
-  <section class="card no-print">
-    <div class="actions">
-      <button class="primary" onclick="analyze()">Analyze results</button>
-      <button class="secondary" onclick="resetAll()">Reset</button>
-      <button class="secondary" onclick="printReport()">Print report</button>
-      <button class="ghost" onclick="saveLocally()">Save locally</button>
-      <button class="ghost" onclick="clearSaved()">Clear saved data</button>
-      <button class="ghost" onclick="downloadSaveFile()">Download my subjects</button>
-      <button class="ghost" onclick="document.getElementById('uploadSaveFile').click()">Upload saved file</button>
-      <input type="file" id="uploadSaveFile" accept="application/json,.json" style="display:none" onchange="handleUploadSaveFile(event)">
+    <div class="wizard-nav no-print">
+      <div class="actions" style="margin-bottom:0">
+        <button class="ghost" onclick="saveLocally()">Save locally</button>
+        <button class="ghost" onclick="clearSaved()">Clear saved data</button>
+        <button class="ghost" onclick="document.getElementById('uploadSaveFile').click()">Upload saved file</button>
+        <input type="file" id="uploadSaveFile" accept="application/json,.json" style="display:none" onchange="handleUploadSaveFile(event)">
+      </div>
+      <button class="primary next-btn" id="toStep2Btn" onclick="goToStep(2)">Next: enter marks →</button>
     </div>
-    <p class="muted" style="margin:8px 0 0">"Download my subjects" saves a small file with your selected subjects, papers, and marks. Upload that file later (even on a different device) to have everything auto-select and refill itself.</p>
-    <p id="globalMsg" role="status"></p>
+    <p id="step1Msg" role="status" class="step-msg"></p>
   </section>
 
-  <section class="card hide" id="reportSection">
-    <h2>Results dashboard</h2>
+  <section class="card wizard-step hide" id="entrySection" data-step="2">
+    <h2>2. Paper combination and marks</h2>
+    <p class="muted">For each subject, choose the paper/component combination you actually sit, then enter Mock 1 and Mock 2 marks for every paper. Leave a box blank if you have not sat that mock yet — a blank is treated as "not entered", never as zero. Add weak-topic notes if you want them called out in your improvement plan.</p>
+    <div id="entryContainer"><p class="muted">Select at least one subject first.</p></div>
+    <div class="wizard-nav no-print">
+      <div class="actions" style="margin-bottom:0">
+        <button class="secondary" onclick="goToStep(1)">← Back to subjects</button>
+        <button class="secondary" onclick="resetAll()">Reset everything</button>
+      </div>
+      <button class="primary next-btn" onclick="analyze()">Analyze results →</button>
+    </div>
+    <p id="globalMsg" role="status" class="step-msg"></p>
+  </section>
+
+  <section class="card wizard-step hide" id="reportSection" data-step="3">
+    <h2>3. Results dashboard</h2>
     <div class="dash-grid" id="dashboard"></div>
     <p class="disclaimer">Thresholds vary between examination series because Cambridge adjusts them according to paper difficulty. Historical averages are useful for planning but are not predictions of the next official threshold.</p>
+    <div id="difficultyRanking"></div>
     <div id="subjectReports"></div>
+    <div class="wizard-nav no-print">
+      <div class="actions" style="margin-bottom:0">
+        <button class="secondary" onclick="goToStep(2)">← Back to marks</button>
+        <button class="secondary" onclick="printReport()">Print report</button>
+        <button class="ghost" onclick="downloadSaveFile()">Download my subjects</button>
+        <button class="ghost" onclick="resetAll()">Start over</button>
+      </div>
+    </div>
   </section>
 
   <section class="card">
@@ -411,41 +451,89 @@ const subjects = {
     name: "Information and Communication Technology",
     hasAstar: true,
     optionGroups: {
-      "Papers 11, 21, 31 (AX)": {
-        officialMax: 280, approxMax: true,
-        components: [{name:"Paper 11 (Theory)", max:80},{name:"Paper 21 (Document Production, Databases & Presentations)", max:70},{name:"Paper 31 (Data Analysis & Website Authoring)", max:70}],
-        weightNote: "Cambridge applies a weighting factor to reach the overall maximum of 280 from raw maximums that sum to 220; the exact factor per paper could not be verified, so raw-mark validation limits above are the component maximums only.",
+      "Papers 11, 02, 03 (AX)": {
+        officialMax: 280,
+        components: [{name:"Paper 11 (Theory)", max:80},{name:"Paper 02 (Document Production, Databases & Presentations)", max:70},{name:"Paper 03 (Data Analysis & Website Authoring)", max:70}],
+        weightNote: "Exact Cambridge weighting: Paper 11 raw 80 counts as 112 (×1.4); Papers 02 and 03 raw 70 each count as 84 (×1.2). 112 + 84 + 84 = 280.",
         sessions: { "June 2025": {Ast:196,A:166,B:136,C:107,D:89,E:72,F:54,G:36} } },
-      "Papers 12, 21, 31 (AY)": {
-        officialMax: 280, approxMax: true,
-        components: [{name:"Paper 12 (Theory)", max:80},{name:"Paper 21 (Document Production, Databases & Presentations)", max:70},{name:"Paper 31 (Data Analysis & Website Authoring)", max:70}],
-        weightNote: "Cambridge applies a weighting factor to reach the overall maximum of 280 from raw maximums that sum to 220; the exact factor per paper could not be verified, so raw-mark validation limits above are the component maximums only.",
+      "Papers 12, 02, 03 (AY)": {
+        officialMax: 280,
+        components: [{name:"Paper 12 (Theory)", max:80},{name:"Paper 02 (Document Production, Databases & Presentations)", max:70},{name:"Paper 03 (Data Analysis & Website Authoring)", max:70}],
+        weightNote: "Exact Cambridge weighting: Paper 12 raw 80 counts as 112 (×1.4); Papers 02 and 03 raw 70 each count as 84 (×1.2). 112 + 84 + 84 = 280.",
         sessions: { "June 2025": {Ast:198,A:168,B:138,C:109,D:91,E:73,F:56,G:38} } },
-      "Papers 13, 21, 31 (AZ)": {
-        officialMax: 280, approxMax: true,
-        components: [{name:"Paper 13 (Theory)", max:80},{name:"Paper 21 (Document Production, Databases & Presentations)", max:70},{name:"Paper 31 (Data Analysis & Website Authoring)", max:70}],
-        weightNote: "Cambridge applies a weighting factor to reach the overall maximum of 280 from raw maximums that sum to 220; the exact factor per paper could not be verified, so raw-mark validation limits above are the component maximums only.",
+      "Papers 13, 02, 03 (AZ)": {
+        officialMax: 280,
+        components: [{name:"Paper 13 (Theory)", max:80},{name:"Paper 02 (Document Production, Databases & Presentations)", max:70},{name:"Paper 03 (Data Analysis & Website Authoring)", max:70}],
+        weightNote: "Exact Cambridge weighting: Paper 13 raw 80 counts as 112 (×1.4); Papers 02 and 03 raw 70 each count as 84 (×1.2). 112 + 84 + 84 = 280.",
         sessions: { "June 2025": {Ast:194,A:165,B:136,C:107,D:89,E:72,F:54,G:36} } }
+    }
+  },
+  "0452": {
+    name: "Accounting",
+    hasAstar: true,
+    optionGroups: {
+      "Papers 11, 21 (AX)": {
+        officialMax: 143,
+        components: [{name:"Paper 11 (Multiple Choice & Structured)", max:35},{name:"Paper 21 (Structured & Multi-step Problem)", max:100}],
+        weightNote: "Exact Cambridge weighting: Paper 11 raw 35 counts as 43 (×1.22857); Paper 21 counts 1:1. 43 + 100 = 143.",
+        sessions: { "June 2024": {Ast:93,A:74,B:55,C:37,D:31,E:26,F:21,G:16} }
+      },
+      "Papers 12, 22 (AY)": {
+        officialMax: 143,
+        components: [{name:"Paper 12 (Multiple Choice & Structured)", max:35},{name:"Paper 22 (Structured & Multi-step Problem)", max:100}],
+        weightNote: "Exact Cambridge weighting: Paper 12 raw 35 counts as 43 (×1.22857); Paper 22 counts 1:1. 43 + 100 = 143.",
+        sessions: { "June 2024": {Ast:109,A:86,B:63,C:40,D:34,E:29,F:23,G:17}, "March 2025": {Ast:115,A:93,B:71,C:50,D:43,E:36,F:29,G:22} }
+      },
+      "Papers 13, 23 (AZ)": {
+        officialMax: 143,
+        components: [{name:"Paper 13 (Multiple Choice & Structured)", max:35},{name:"Paper 23 (Structured & Multi-step Problem)", max:100}],
+        weightNote: "Exact Cambridge weighting: Paper 13 raw 35 counts as 43 (×1.22857); Paper 23 counts 1:1. 43 + 100 = 143.",
+        sessions: { "June 2024": {Ast:109,A:86,B:63,C:40,D:34,E:29,F:23,G:17} }
+      }
+    }
+  },
+  "0606": {
+    name: "Mathematics - Additional",
+    hasAstar: true,
+    optionGroups: {
+      "Papers 11, 21 (AX)": {
+        officialMax: 160,
+        components: [{name:"Paper 11", max:80},{name:"Paper 21", max:80}],
+        weightNote: "No weighting: both papers count 1:1. 80 + 80 = 160. This syllabus grades A* to E only (no F or G).",
+        sessions: { "June 2025": {Ast:135,A:110,B:80,C:51,D:39,E:27}, "November 2025": {Ast:138,A:116,B:80,C:45,D:34,E:24} }
+      },
+      "Papers 12, 22 (AY)": {
+        officialMax: 160,
+        components: [{name:"Paper 12", max:80},{name:"Paper 22", max:80}],
+        weightNote: "No weighting: both papers count 1:1. 80 + 80 = 160. This syllabus grades A* to E only (no F or G).",
+        sessions: { "June 2025": {Ast:137,A:115,B:87,C:59,D:46,E:33}, "November 2025": {Ast:136,A:113,B:76,C:39,D:29,E:20} }
+      },
+      "Papers 13, 23 (AZ)": {
+        officialMax: 160,
+        components: [{name:"Paper 13", max:80},{name:"Paper 23", max:80}],
+        weightNote: "No weighting: both papers count 1:1. 80 + 80 = 160. This syllabus grades A* to E only (no F or G).",
+        sessions: { "June 2025": {Ast:137,A:114,B:85,C:56,D:43,E:31}, "November 2025": {Ast:135,A:110,B:77,C:45,D:33,E:21} }
+      }
     }
   },
   "0510": {
     name: "English as a Second Language",
     hasAstar: true,
     optionGroups: {
-      "Papers 11, 21, 31 (AX)": {
-        officialMax: 150, approxMax: true,
-        components: [{name:"Paper 11 (Reading & Writing)", max:60},{name:"Paper 21 (Listening)", max:40},{name:"Paper 31 (Speaking, internally assessed)", max:40}],
-        weightNote: "The speaking component is separately weighted into the overall mark; the exact factor could not be verified, so this is an approximate breakdown of the published 150-mark overall maximum.",
+      "Papers 11, 21 (AX)": {
+        officialMax: 150,
+        components: [{name:"Paper 11 (Reading & Writing)", max:60},{name:"Paper 21 (Listening)", max:40}],
+        weightNote: "Exact Cambridge weighting: Paper 11 raw 60 counts as 105 (×1.75); Paper 21 raw 40 counts as 45 (×1.125). 105 + 45 = 150. Speaking is reported separately as a Speaking Endorsement grade and does not count toward this overall grade.",
         sessions: { "June 2025": {Ast:142,A:135,B:125,C:116,D:103,E:91,F:79,G:66} } },
-      "Papers 12, 22, 32 (AY)": {
-        officialMax: 150, approxMax: true,
-        components: [{name:"Paper 12 (Reading & Writing)", max:60},{name:"Paper 22 (Listening)", max:40},{name:"Paper 32 (Speaking, internally assessed)", max:40}],
-        weightNote: "The speaking component is separately weighted into the overall mark; the exact factor could not be verified, so this is an approximate breakdown of the published 150-mark overall maximum.",
+      "Papers 12, 22 (AY)": {
+        officialMax: 150,
+        components: [{name:"Paper 12 (Reading & Writing)", max:60},{name:"Paper 22 (Listening)", max:40}],
+        weightNote: "Exact Cambridge weighting: Paper 12 raw 60 counts as 105 (×1.75); Paper 22 raw 40 counts as 45 (×1.125). 105 + 45 = 150. Speaking is reported separately as a Speaking Endorsement grade and does not count toward this overall grade.",
         sessions: { "June 2025": {Ast:142,A:135,B:121,C:108,D:96,E:85,F:75,G:65} } },
-      "Papers 13, 23, 33 (AZ)": {
-        officialMax: 150, approxMax: true,
-        components: [{name:"Paper 13 (Reading & Writing)", max:60},{name:"Paper 23 (Listening)", max:40},{name:"Paper 33 (Speaking, internally assessed)", max:40}],
-        weightNote: "The speaking component is separately weighted into the overall mark; the exact factor could not be verified, so this is an approximate breakdown of the published 150-mark overall maximum.",
+      "Papers 13, 23 (AZ)": {
+        officialMax: 150,
+        components: [{name:"Paper 13 (Reading & Writing)", max:60},{name:"Paper 23 (Listening)", max:40}],
+        weightNote: "Exact Cambridge weighting: Paper 13 raw 60 counts as 105 (×1.75); Paper 23 raw 40 counts as 45 (×1.125). 105 + 45 = 150. Speaking is reported separately as a Speaking Endorsement grade and does not count toward this overall grade.",
         sessions: { "June 2025": {Ast:142,A:135,B:125,C:116,D:103,E:91,F:79,G:66} } }
     }
   },
@@ -481,21 +569,21 @@ const subjects = {
     hasAstar: true,
     optionGroups: {
       "Listening, Reading, Writing, Speaking (X: 03, 11, 21, 41)": {
-        officialMax: 200, approxMax: true,
+        officialMax: 200,
         components: [{name:"Component 03 (Listening)", max:40},{name:"Component 11 (Reading)", max:40},{name:"Component 21 (Writing)", max:45},{name:"Component 41 (Speaking)", max:45}],
-        weightNote: "Cambridge applies a weighting factor to combine these components into the published 200-mark overall maximum; raw maximums shown sum to 170.",
+        weightNote: "Exact Cambridge weighting: Component 03 and the Reading component (raw 40 each) count as 50 each (×1.25); the Writing and Speaking components (raw 45 each) count as 50 each (×1.11111). 50+50+50+50 = 200.",
         sessions: { "June 2025": {Ast:164,A:142,B:120,C:99,D:84,E:69,F:53,G:37} }
       },
       "Listening, Reading, Writing, Speaking (Y: 03, 12, 22, 42)": {
-        officialMax: 200, approxMax: true,
+        officialMax: 200,
         components: [{name:"Component 03 (Listening)", max:40},{name:"Component 12 (Reading)", max:40},{name:"Component 22 (Writing)", max:45},{name:"Component 42 (Speaking)", max:45}],
-        weightNote: "Cambridge applies a weighting factor to combine these components into the published 200-mark overall maximum; raw maximums shown sum to 170.",
+        weightNote: "Exact Cambridge weighting: Component 03 and the Reading component (raw 40 each) count as 50 each (×1.25); the Writing and Speaking components (raw 45 each) count as 50 each (×1.11111). 50+50+50+50 = 200.",
         sessions: { "June 2025": {Ast:167,A:144,B:121,C:99,D:84,E:69,F:53,G:37} }
       },
       "Listening, Reading, Writing, Speaking (Z: 03, 13, 23, 43)": {
-        officialMax: 200, approxMax: true,
+        officialMax: 200,
         components: [{name:"Component 03 (Listening)", max:40},{name:"Component 13 (Reading)", max:40},{name:"Component 23 (Writing)", max:45},{name:"Component 43 (Speaking)", max:45}],
-        weightNote: "Cambridge applies a weighting factor to combine these components into the published 200-mark overall maximum; raw maximums shown sum to 170.",
+        weightNote: "Exact Cambridge weighting: Component 03 and the Reading component (raw 40 each) count as 50 each (×1.25); the Writing and Speaking components (raw 45 each) count as 50 each (×1.11111). 50+50+50+50 = 200.",
         sessions: { "June 2025": {Ast:168,A:145,B:122,C:100,D:84,E:69,F:53,G:37} }
       }
     }
@@ -505,21 +593,21 @@ const subjects = {
     hasAstar: true,
     optionGroups: {
       "Listening, Reading, Writing, Speaking (X: 03, 11, 21, 41)": {
-        officialMax: 200, approxMax: true,
+        officialMax: 200,
         components: [{name:"Component 03 (Listening)", max:40},{name:"Component 11 (Reading)", max:40},{name:"Component 21 (Writing)", max:45},{name:"Component 41 (Speaking)", max:45}],
-        weightNote: "Cambridge applies a weighting factor to combine these components into the published 200-mark overall maximum; raw maximums shown sum to 170.",
+        weightNote: "Exact Cambridge weighting: Component 03 and the Reading component (raw 40 each) count as 50 each (×1.25); the Writing and Speaking components (raw 45 each) count as 50 each (×1.11111). 50+50+50+50 = 200.",
         sessions: { "June 2025": {Ast:164,A:142,B:120,C:99,D:83,E:67,F:53,G:39} }
       },
       "Listening, Reading, Writing, Speaking (Y: 03, 12, 22, 42)": {
-        officialMax: 200, approxMax: true,
+        officialMax: 200,
         components: [{name:"Component 03 (Listening)", max:40},{name:"Component 12 (Reading)", max:40},{name:"Component 22 (Writing)", max:45},{name:"Component 42 (Speaking)", max:45}],
-        weightNote: "Cambridge applies a weighting factor to combine these components into the published 200-mark overall maximum; raw maximums shown sum to 170.",
+        weightNote: "Exact Cambridge weighting: Component 03 and the Reading component (raw 40 each) count as 50 each (×1.25); the Writing and Speaking components (raw 45 each) count as 50 each (×1.11111). 50+50+50+50 = 200.",
         sessions: { "June 2025": {Ast:165,A:143,B:121,C:100,D:84,E:68,F:54,G:40} }
       },
       "Listening, Reading, Writing, Speaking (Z: 03, 13, 23, 43)": {
-        officialMax: 200, approxMax: true,
+        officialMax: 200,
         components: [{name:"Component 03 (Listening)", max:40},{name:"Component 13 (Reading)", max:40},{name:"Component 23 (Writing)", max:45},{name:"Component 43 (Speaking)", max:45}],
-        weightNote: "Cambridge applies a weighting factor to combine these components into the published 200-mark overall maximum; raw maximums shown sum to 170.",
+        weightNote: "Exact Cambridge weighting: Component 03 and the Reading component (raw 40 each) count as 50 each (×1.25); the Writing and Speaking components (raw 45 each) count as 50 each (×1.11111). 50+50+50+50 = 200.",
         sessions: { "June 2025": {Ast:164,A:142,B:120,C:99,D:83,E:67,F:53,G:39} }
       }
     }
@@ -531,13 +619,7 @@ const subjects = {
       "Papers 01, 02": {
         officialMax: 90,
         components: [{name:"Component 01 (Writing)", max:60},{name:"Component 02 (Listening)", max:30}],
-        sessions: { "March 2025": {Ast:69,A:61,B:53,C:45,D:37,E:30,F:23,G:16}, "November 2025": {Ast:69,A:60,B:51,C:42,D:35,E:28,F:22,G:16} }
-      },
-      "Papers 01, 02, 03 (with Speaking)": {
-        officialMax: 90,
-        components: [{name:"Component 01 (Writing)", max:60},{name:"Component 02 (Listening)", max:30},{name:"Component 03 (Speaking)", max:60}],
-        weightNote: "Component 03 (Speaking) is separately weighted into the same 90-mark overall maximum as the two-component option; the exact factor could not be verified.",
-        approxMax: true,
+        weightNote: "Exact Cambridge weighting: both components count 1:1 (60 + 30 = 90). A Speaking component (03) exists but is weighted to zero toward this grade — it does not affect the overall result.",
         sessions: { "March 2025": {Ast:69,A:61,B:53,C:45,D:37,E:30,F:23,G:16}, "November 2025": {Ast:69,A:60,B:51,C:42,D:35,E:28,F:22,G:16} }
       }
     }
@@ -565,19 +647,19 @@ const subjects = {
       "Papers 11, 21 (X)": {
         officialMax: 150,
         components: [{name:"Paper 11 (Multiple Choice)", max:30},{name:"Paper 21 (Structured Questions)", max:90}],
-        weightNote: "Cambridge applies a weighting factor to reach the 150-mark overall maximum from raw maximums that sum to 120.",
+        weightNote: "Exact Cambridge weighting: Paper 11/12/13 raw 30 counts as 45 (×1.5); Paper 21/22/23 raw 90 counts as 105 (×1.16667). 45 + 105 = 150.",
         sessions: { "June 2025": {Ast:114,A:97,B:80,C:63,D:55,E:47,F:37,G:27}, "November 2025": {Ast:126,A:108,B:90,C:72,D:59,E:47,F:36,G:25} }
       },
       "Papers 12, 22 (Y)": {
         officialMax: 150,
         components: [{name:"Paper 12 (Multiple Choice)", max:30},{name:"Paper 22 (Structured Questions)", max:90}],
-        weightNote: "Cambridge applies a weighting factor to reach the 150-mark overall maximum from raw maximums that sum to 120.",
+        weightNote: "Exact Cambridge weighting: Paper 11/12/13 raw 30 counts as 45 (×1.5); Paper 21/22/23 raw 90 counts as 105 (×1.16667). 45 + 105 = 150.",
         sessions: { "June 2025": {Ast:125,A:106,B:87,C:68,D:58,E:48,F:38,G:28}, "November 2025": {Ast:126,A:105,B:84,C:64,D:52,E:41,F:31,G:21} }
       },
       "Papers 13, 23 (Z)": {
         officialMax: 150,
         components: [{name:"Paper 13 (Multiple Choice)", max:30},{name:"Paper 23 (Structured Questions)", max:90}],
-        weightNote: "Cambridge applies a weighting factor to reach the 150-mark overall maximum from raw maximums that sum to 120.",
+        weightNote: "Exact Cambridge weighting: Paper 11/12/13 raw 30 counts as 45 (×1.5); Paper 21/22/23 raw 90 counts as 105 (×1.16667). 45 + 105 = 150.",
         sessions: { "June 2025": {Ast:115,A:98,B:81,C:65,D:56,E:47,F:37,G:27}, "November 2025": {Ast:122,A:105,B:88,C:71,D:59,E:48,F:36,G:24} }
       }
     }
@@ -650,39 +732,39 @@ const subjects = {
     hasAstar: true,
     optionGroups: {
       "Papers 03, 11, 21 (AX, Coursework Alternative)": {
-        officialMax: 150, approxMax: true,
+        officialMax: 150,
         components: [{name:"Component 03 (Coursework Alternative)", max:40},{name:"Paper 11 (Depth Study)", max:60},{name:"Paper 21 (Source-based)", max:40}],
-        weightNote: "Cambridge applies a weighting factor to reach the 150-mark overall maximum from raw maximums that sum to 140.",
+        weightNote: "Exact Cambridge weighting: the Depth Study (raw 60) counts 1:1; Component 03, the Source-based paper, and the Coursework component (raw 40 each) count as 45 each (×1.125). 60 + 45 + 45 = 150.",
         sessions: { "June 2025": {Ast:105,A:93,B:81,C:70,D:62,E:54,F:46,G:38} }
       },
       "Papers 03, 12, 22 (AY, Coursework Alternative)": {
-        officialMax: 150, approxMax: true,
+        officialMax: 150,
         components: [{name:"Component 03 (Coursework Alternative)", max:40},{name:"Paper 12 (Depth Study)", max:60},{name:"Paper 22 (Source-based)", max:40}],
-        weightNote: "Cambridge applies a weighting factor to reach the 150-mark overall maximum from raw maximums that sum to 140.",
+        weightNote: "Exact Cambridge weighting: the Depth Study (raw 60) counts 1:1; Component 03, the Source-based paper, and the Coursework component (raw 40 each) count as 45 each (×1.125). 60 + 45 + 45 = 150.",
         sessions: { "June 2025": {Ast:106,A:94,B:82,C:70,D:62,E:55,F:48,G:41} }
       },
       "Papers 03, 13, 23 (AZ, Coursework Alternative)": {
-        officialMax: 150, approxMax: true,
+        officialMax: 150,
         components: [{name:"Component 03 (Coursework Alternative)", max:40},{name:"Paper 13 (Depth Study)", max:60},{name:"Paper 23 (Source-based)", max:40}],
-        weightNote: "Cambridge applies a weighting factor to reach the 150-mark overall maximum from raw maximums that sum to 140.",
+        weightNote: "Exact Cambridge weighting: the Depth Study (raw 60) counts 1:1; Component 03, the Source-based paper, and the Coursework component (raw 40 each) count as 45 each (×1.125). 60 + 45 + 45 = 150.",
         sessions: { "June 2025": {Ast:110,A:97,B:84,C:71,D:62,E:54,F:46,G:38} }
       },
       "Papers 11, 21, 41 (BX, Coursework route)": {
-        officialMax: 150, approxMax: true,
+        officialMax: 150,
         components: [{name:"Paper 11 (Depth Study)", max:60},{name:"Paper 21 (Source-based)", max:40},{name:"Component 41 (Coursework)", max:40}],
-        weightNote: "Cambridge applies a weighting factor to reach the 150-mark overall maximum from raw maximums that sum to 140.",
+        weightNote: "Exact Cambridge weighting: the Depth Study (raw 60) counts 1:1; Component 03, the Source-based paper, and the Coursework component (raw 40 each) count as 45 each (×1.125). 60 + 45 + 45 = 150.",
         sessions: { "June 2025": {Ast:91,A:77,B:63,C:50,D:44,E:39,F:32,G:25} }
       },
       "Papers 12, 22, 42 (BY, Coursework route)": {
-        officialMax: 150, approxMax: true,
+        officialMax: 150,
         components: [{name:"Paper 12 (Depth Study)", max:60},{name:"Paper 22 (Source-based)", max:40},{name:"Component 42 (Coursework)", max:40}],
-        weightNote: "Cambridge applies a weighting factor to reach the 150-mark overall maximum from raw maximums that sum to 140.",
+        weightNote: "Exact Cambridge weighting: the Depth Study (raw 60) counts 1:1; Component 03, the Source-based paper, and the Coursework component (raw 40 each) count as 45 each (×1.125). 60 + 45 + 45 = 150.",
         sessions: { "June 2025": {Ast:94,A:79,B:64,C:50,D:45,E:40,F:34,G:28} }
       },
       "Papers 13, 23, 43 (BZ, Coursework route)": {
-        officialMax: 150, approxMax: true,
+        officialMax: 150,
         components: [{name:"Paper 13 (Depth Study)", max:60},{name:"Paper 23 (Source-based)", max:40},{name:"Component 43 (Coursework)", max:40}],
-        weightNote: "Cambridge applies a weighting factor to reach the 150-mark overall maximum from raw maximums that sum to 140.",
+        weightNote: "Exact Cambridge weighting: the Depth Study (raw 60) counts 1:1; Component 03, the Source-based paper, and the Coursework component (raw 40 each) count as 45 each (×1.125). 60 + 45 + 45 = 150.",
         sessions: { "June 2025": {Ast:97,A:82,B:67,C:52,D:45,E:39,F:32,G:25} }
       }
     }
@@ -702,12 +784,12 @@ const subjects = {
 
 // Subject-group tags for the 17 subjects above, used by the group filter.
 const DETAILED_SUBJECT_GROUPS = {
-  "0607":"Mathematics", "0610":"Sciences", "0620":"Sciences", "0625":"Sciences",
+  "0607":"Mathematics", "0606":"Mathematics", "0610":"Sciences", "0620":"Sciences", "0625":"Sciences",
   "0417":"ICT & Computer Science", "0478":"ICT & Computer Science",
   "0510":"Languages (Foreign/Second Language)", "0500":"English & Literature",
   "0520":"Languages (Foreign/Second Language)", "0530":"Languages (Foreign/Second Language)",
   "0549":"Languages (Foreign/Second Language)",
-  "0455":"Business, Economics & Accounting", "0450":"Business, Economics & Accounting",
+  "0455":"Business, Economics & Accounting", "0450":"Business, Economics & Accounting", "0452":"Business, Economics & Accounting",
   "0460":"Humanities & Social Sciences", "0470":"Humanities & Social Sciences",
   "3226":"Languages (First Language)", "2035":"Religious & Values Education"
 };
@@ -802,7 +884,8 @@ Object.keys(subjects).forEach((code, i) => { subjectColor[code] = SUBJECT_PALETT
 function buildSubjectGrid(){
   const grid = document.getElementById("subjectGrid");
   grid.innerHTML = "";
-  Object.entries(subjects).forEach(([code, s]) => {
+  const sorted = Object.entries(subjects).sort((a, b) => a[1].name.localeCompare(b[1].name));
+  sorted.forEach(([code, s]) => {
     const label = document.createElement("label");
     label.className = "subject-card";
     label.dataset.code = code.toLowerCase();
@@ -867,32 +950,53 @@ function buildEntryForms(){
     container.innerHTML = '<p class="muted">Select at least one subject above to begin.</p>';
     return;
   }
-  selectedSubjects.forEach(code => {
+  const codesArr = Array.from(selectedSubjects).sort((a, b) => subjects[a].name.localeCompare(subjects[b].name));
+  codesArr.forEach((code, idx) => {
     const s = subjects[code];
-    const fs = document.createElement("fieldset");
-    fs.id = `fs-${code}`;
-    fs.style.setProperty("--accent", subjectColor[code]);
+    const det = document.createElement("details");
+    det.className = "subject-entry";
+    det.id = `fs-${code}`;
+    det.open = idx === 0; // only the first subject starts expanded, to keep the page short
+    det.style.setProperty("--accent", subjectColor[code]);
     const optionNames = Object.keys(s.optionGroups);
     if (!chosenOption[code]) chosenOption[code] = optionNames[0];
 
-    fs.innerHTML = `
-      <legend>${code} — ${s.name}</legend>
-      <div class="option-select">
-        <label for="opt-${code}">Paper combination / option</label>
-        <select id="opt-${code}" aria-label="Paper combination for ${s.name}">
-          ${optionNames.map(o => `<option value="${escapeAttr(o)}">${o}</option>`).join("")}
-        </select>
+    det.innerHTML = `
+      <summary>${code} — ${escapeHtml(s.name)}<span class="summary-hint muted">tap to ${det.open ? "collapse" : "expand"}</span></summary>
+      <div class="subject-entry-body">
+        <div class="option-select">
+          <label for="opt-${code}">Paper combination / option</label>
+          <select id="opt-${code}" aria-label="Paper combination for ${s.name}">
+            ${optionNames.map(o => `<option value="${escapeAttr(o)}">${o}</option>`).join("")}
+          </select>
+        </div>
+        <div id="papers-${code}"></div>
       </div>
-      <div id="papers-${code}"></div>
     `;
-    container.appendChild(fs);
-    fs.querySelector(`#opt-${code}`).value = chosenOption[code];
-    fs.querySelector(`#opt-${code}`).addEventListener("change", (e) => {
+    container.appendChild(det);
+    det.addEventListener("toggle", () => {
+      const hint = det.querySelector(".summary-hint");
+      if (hint) hint.textContent = `tap to ${det.open ? "collapse" : "expand"}`;
+    });
+    det.querySelector(`#opt-${code}`).value = chosenOption[code];
+    det.querySelector(`#opt-${code}`).addEventListener("change", (e) => {
       chosenOption[code] = e.target.value;
       buildPaperRows(code);
     });
     buildPaperRows(code);
   });
+
+  if (codesArr.length > 1){
+    const bar = document.createElement("div");
+    bar.className = "accordion-controls no-print";
+    bar.innerHTML = `<button type="button" class="ghost" onclick="setAllEntries(true)">Expand all</button>
+                      <button type="button" class="ghost" onclick="setAllEntries(false)">Collapse all</button>`;
+    container.insertBefore(bar, container.firstChild);
+  }
+}
+
+function setAllEntries(open){
+  document.querySelectorAll("#entryContainer details.subject-entry").forEach(d => { d.open = open; });
 }
 
 function buildPaperRows(code){
@@ -995,15 +1099,36 @@ function calculateComponentPercentage(mark, max){
   return (mark / max) * 100;
 }
 
+// Turns "June 2025" / "November 2025" / "March 2025" into a sortable number (year + month fraction).
+function sessionSortValue(sessionName){
+  const m = sessionName.match(/(January|February|March|April|May|June|July|August|September|October|November|December)?\s*(\d{4})/i);
+  if (!m) return 0;
+  const monthIndex = { january:0,february:1,march:2,april:3,may:4,june:5,july:6,august:7,september:8,october:9,november:10,december:11 };
+  const month = m[1] ? (monthIndex[m[1].toLowerCase()] || 0) : 0;
+  return Number(m[2]) + month / 12;
+}
+
 // Historical average threshold (as % of officialMax) across recorded sessions, for one grade key.
+// More recent sessions are weighted more heavily, on the idea that a boundary that has been
+// drifting is better represented by recent data than by a flat average of everything on record.
 function calculateHistoricalAverage(opt, gradeKey){
   if (!opt.officialMax || !opt.sessions) return null;
-  const vals = Object.values(opt.sessions)
-    .map(s => s[gradeKey])
-    .filter(v => typeof v === "number")
-    .map(v => (v / opt.officialMax) * 100);
-  if (!vals.length) return null;
-  return { avgPct: vals.reduce((a,b)=>a+b,0) / vals.length, count: vals.length };
+  const entries = Object.entries(opt.sessions)
+    .filter(([, s]) => typeof s[gradeKey] === "number")
+    .map(([session, s]) => ({ session, pct: (s[gradeKey] / opt.officialMax) * 100, sortVal: sessionSortValue(session) }))
+    .sort((a, b) => a.sortVal - b.sortVal); // oldest first
+  if (!entries.length) return null;
+  // Weight 1, 2, 3... from oldest to newest, so the most recent session on record counts most.
+  let weightedSum = 0, weightTotal = 0;
+  entries.forEach((e, i) => { const w = i + 1; weightedSum += e.pct * w; weightTotal += w; });
+  const pcts = entries.map(e => e.pct);
+  return {
+    avgPct: weightedSum / weightTotal,
+    count: entries.length,
+    minPct: Math.min(...pcts),
+    maxPct: Math.max(...pcts),
+    sessions: entries.map(e => e.session)
+  };
 }
 
 function calculateGrade(pct, opt){
@@ -1145,21 +1270,60 @@ function handleUploadSaveFile(event){
 /* =========================================================
    7. RESET / PRINT / MESSAGES
    ========================================================= */
+/* =========================================================
+   WIZARD (3-step flow: subjects -> marks -> results)
+   ========================================================= */
+let currentStep = 1;
+let maxStepReached = 1;
+
+function goToStep(n, fromAnalyze){
+  if (n === 2 && !selectedSubjects.size){
+    showGlobalMsg("Select at least one subject before moving on.", "error", "step1Msg");
+    return;
+  }
+  if (n === 3 && !fromAnalyze && maxStepReached < 3){
+    // Step 3 is only reachable through Analyze (from step 2), which validates marks first.
+    analyze();
+    return;
+  }
+  currentStep = n;
+  if (n > maxStepReached) maxStepReached = n;
+  document.querySelectorAll(".wizard-step").forEach(sec => {
+    sec.classList.toggle("hide", Number(sec.dataset.step) !== n);
+  });
+  document.querySelectorAll("#stepNav .step-pill").forEach(pill => {
+    const s = Number(pill.dataset.step);
+    pill.classList.toggle("active", s === n);
+    pill.classList.toggle("done", s < n || (s <= maxStepReached && s !== n));
+  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 function resetAll(){
   selectedSubjects.clear();
   Object.keys(chosenOption).forEach(k => delete chosenOption[k]);
   document.querySelectorAll('#subjectGrid input[type=checkbox]').forEach(cb => cb.checked = false);
   buildEntryForms();
-  document.getElementById("reportSection").classList.add("hide");
+  maxStepReached = 1;
+  goToStep(1);
   showGlobalMsg("", "");
 }
 
-function printReport(){ window.print(); }
+function printReport(){
+  setAllEntries(true);
+  setAllReports(true);
+  window.print();
+}
 
-function showGlobalMsg(text, kind){
-  const el = document.getElementById("globalMsg");
-  el.textContent = text;
-  el.className = kind === "error" ? "error" : kind === "ok" ? "ok" : "";
+function showGlobalMsg(text, kind, targetId){
+  const cls = kind === "error" ? "error" : kind === "ok" ? "ok" : "";
+  const ids = targetId ? [targetId] : ["globalMsg", "step1Msg"];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = text;
+    el.className = "step-msg " + cls;
+  });
 }
 
 /* =========================================================
@@ -1178,13 +1342,13 @@ function analyze(){
 
   const subjectResults = [];
   selectedSubjects.forEach(code => subjectResults.push(buildSubjectResult(code)));
+  subjectResults.sort((a, b) => a.name.localeCompare(b.name));
 
   renderDashboard(subjectResults);
+  renderDifficultyRanking(subjectResults);
   renderSubjectReports(subjectResults);
 
-  document.getElementById("reportSection").classList.remove("hide");
-  const target = document.getElementById("reportSection");
-  window.scrollTo({ top: target.offsetTop - 12, behavior: "smooth" });
+  goToStep(3, true);
 }
 
 function buildSubjectResult(code){
@@ -1254,6 +1418,27 @@ function gradeClass(grade){
   return "g-low";
 }
 
+function renderDifficultyRanking(results){
+  const box = document.getElementById("difficultyRanking");
+  const ranked = results
+    .filter(r => r.hasThresholdData && r.astarAvgInfo)
+    .map(r => ({ code: r.code, name: r.name, pct: r.astarAvgInfo.avgPct }))
+    .sort((a, b) => b.pct - a.pct);
+  if (ranked.length < 2){ box.innerHTML = ""; return; }
+  const maxPct = Math.max(...ranked.map(r => r.pct));
+  const rows = ranked.map(r => `
+    <div style="display:grid;grid-template-columns:1fr 3fr 60px;gap:10px;align-items:center;margin:8px 0">
+      <span style="font-size:13px;font-weight:700">${escapeHtml(r.name)}</span>
+      <div class="bar-track"><div class="bar-fill mid" style="width:${(r.pct / maxPct * 100).toFixed(1)}%"></div></div>
+      <span style="font-size:13px;text-align:right">${r.pct.toFixed(1)}%</span>
+    </div>`).join("");
+  box.innerHTML = `
+    <div class="disclaimer" style="background:var(--card)">
+      <strong>A* difficulty, among your selected subjects</strong> — the historical A* threshold as a percentage of each subject's overall maximum, highest first. A higher bar means a higher raw percentage is historically needed for A* in that subject; it says nothing about which subject is easier to study, only where the mark bar has historically sat.
+      ${rows}
+    </div>`;
+}
+
 function renderDashboard(results){
   let astarCount=0, aCount=0, bCount=0, needsImprovement=0, noData=0;
   results.forEach(r => {
@@ -1299,9 +1484,18 @@ function renderSubjectReports(results){
   const container = document.getElementById("subjectReports");
   container.innerHTML = "";
 
-  results.forEach(r => {
-    const card = document.createElement("div");
+  if (results.length > 1){
+    const bar = document.createElement("div");
+    bar.className = "accordion-controls no-print";
+    bar.innerHTML = `<button type="button" class="ghost" onclick="setAllReports(true)">Expand all reports</button>
+                      <button type="button" class="ghost" onclick="setAllReports(false)">Collapse all reports</button>`;
+    container.appendChild(bar);
+  }
+
+  results.forEach((r, idx) => {
+    const card = document.createElement("details");
     card.className = "subject-report";
+    card.open = idx === 0; // keep the page short: only the first result starts expanded
     card.style.setProperty("--accent", subjectColor[r.code]);
 
     const latestGrade = r.mock2.entered ? r.mock2Grade.grade : (r.mock1.entered ? r.mock1Grade.grade : null);
@@ -1321,11 +1515,12 @@ function renderSubjectReports(results){
 
     let targetsHtml = "";
     if (r.hasThresholdData){
+      const rangeText = (info) => info.count > 1 ? ` Range across recorded sessions: ${info.minPct.toFixed(1)}%–${info.maxPct.toFixed(1)}%.` : "";
       const aLine = r.aAvgInfo
-        ? `Historical A threshold estimate: ${r.aAvgInfo.avgPct.toFixed(1)}% (average of ${r.aAvgInfo.count} recorded session${r.aAvgInfo.count>1?'s':''}). Planning target: ${r.aTargetPct.toFixed(1)}%.`
+        ? `Historical A threshold estimate: ${r.aAvgInfo.avgPct.toFixed(1)}% (recency-weighted across ${r.aAvgInfo.count} recorded session${r.aAvgInfo.count>1?'s':''}: ${r.aAvgInfo.sessions.join(", ")}).${rangeText(r.aAvgInfo)} Planning target: ${r.aTargetPct.toFixed(1)}%.`
         : "No recorded A threshold for this option.";
       const astarLine = r.astarAvgInfo
-        ? `Historical A* threshold estimate: ${r.astarAvgInfo.avgPct.toFixed(1)}% (average of ${r.astarAvgInfo.count} recorded session${r.astarAvgInfo.count>1?'s':''}). Planning target: ${r.astarTargetPct.toFixed(1)}%.`
+        ? `Historical A* threshold estimate: ${r.astarAvgInfo.avgPct.toFixed(1)}% (recency-weighted across ${r.astarAvgInfo.count} recorded session${r.astarAvgInfo.count>1?'s':''}: ${r.astarAvgInfo.sessions.join(", ")}).${rangeText(r.astarAvgInfo)} Planning target: ${r.astarTargetPct.toFixed(1)}%.`
         : "No recorded A* threshold for this option.";
       let statusLine = "";
       const currentPct = r.mock2.entered ? r.mock2.pct : (r.mock1.entered ? r.mock1.pct : null);
@@ -1335,7 +1530,7 @@ function renderSubjectReports(results){
       }
       targetsHtml = `
         <div class="disclaimer">
-          <strong>Historical threshold estimate</strong> — derived from published Cambridge grade thresholds for option "${r.optName}", converted to a percentage of the option's overall maximum (${r.opt.officialMax}). Not an official prediction of the next series.<br>
+          <strong>Historical threshold estimate</strong> — derived from published Cambridge grade thresholds for option "${r.optName}", converted to a percentage of the option's overall maximum (${r.opt.officialMax}). Where more than one session is on record, more recent sessions are weighted more heavily than older ones, so a drifting boundary is reflected rather than smoothed away. Not an official prediction of the next series.<br>
           ${aLine}<br>${astarLine}${statusLine ? "<br>" + statusLine : ""}
           <br><em>Planning target adds a ${PLANNING_BUFFER_PCT}-point buffer above the historical average. This is a planning target, not an official Cambridge requirement.</em>
           ${r.opt.weightNote ? `<br><em>${escapeHtml(r.opt.weightNote)}</em>` : ""}
@@ -1376,10 +1571,10 @@ function renderSubjectReports(results){
     }
 
     card.innerHTML = `
-      <div class="head">
+      <summary class="head">
         <h3>${r.code} — ${escapeHtml(r.name)} <span class="muted" style="font-weight:400;font-size:13px">(${escapeHtml(r.optName)})</span></h3>
         ${chip}
-      </div>
+      </summary>
       <div class="body">
         <div class="mock-compare">
           ${mockBox("Mock 1", r.mock1, r.mock1Grade, r.hasThresholdData)}
@@ -1398,6 +1593,10 @@ function renderSubjectReports(results){
     `;
     container.appendChild(card);
   });
+}
+
+function setAllReports(open){
+  document.querySelectorAll("#subjectReports details.subject-report").forEach(d => { d.open = open; });
 }
 
 function referenceTargetLabel(r){
@@ -1440,10 +1639,29 @@ function initTheme(){
   }
 }
 
+function renderHeroStats(){
+  const codes = Object.keys(subjects);
+  const multiSession = codes.filter(c => {
+    const opts = Object.values(subjects[c].optionGroups);
+    return opts.some(o => Object.keys(o.sessions || {}).length > 1);
+  }).length;
+  const totalSessions = new Set();
+  codes.forEach(c => Object.values(subjects[c].optionGroups).forEach(o => Object.keys(o.sessions || {}).forEach(s => totalSessions.add(s))));
+  const stats = [
+    { n: codes.length, l: "subjects with sourced data" },
+    { n: multiSession, l: "have 2+ recorded sessions" },
+    { n: totalSessions.size, l: "exam sessions on record" }
+  ];
+  document.getElementById("heroStats").innerHTML = stats.map(s =>
+    `<div class="hero-stat"><span class="n">${s.n}</span><span class="l">${s.l}</span></div>`
+  ).join("");
+}
+
 /* =========================================================
    9. INIT
    ========================================================= */
 initTheme();
+renderHeroStats();
 buildSubjectGrid();
 buildEntryForms();
 loadData();
